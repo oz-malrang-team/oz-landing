@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malrang - 더불어 사는 사회</title>
+  <meta name="description" content="Malrang은 사회적인 크라우드펀딩 플랫폼입니다. 혁신적이고 , 열정적인 서포터들을 연결하여 당신의 프로젝트를 세상에 선보이세요.">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #667eea;
+      --secondary-color: #764ba2;
+      --accent-color: #f093fb;
+      --text-dark: #2d3748;
+      --text-light: #718096;
+      --white: #ffffff;
+      --light-bg: #f7fafc;
+      --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      line-height: 1.6;
+      color: var(--text-dark);
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* 네비게이션 */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      padding: 1rem 2rem;
+      transition: var(--transition);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-color);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* 히어로 섹션 */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1400px;
+      width: 100%;
+      padding: 0 2rem;
+      gap: 4rem;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="20" cy="80" r="0.5" fill="white" opacity="0.1"/><circle cx="80" cy="20" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(-10px, -10px) rotate(1deg); }
+      50% { transform: translate(10px, -20px) rotate(-1deg); }
+      75% { transform: translate(-5px, 10px) rotate(0.5deg); }
+    }
+
+    .hero-content {
+      z-index: 2;
+      position: relative;
+      max-width: 600px;
+      padding: 2rem;
+      text-align: left;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero p {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      margin-bottom: 3rem;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    /* 나선형 메뉴 컨테이너 */
+    .spiral-container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .center-logo {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      z-index: 10;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      text-decoration: none;
+    }
+
+    .center-logo:hover {
+      transform: scale(1.1);
+    }
+
+    .menu-item {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 11px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      animation: spiral-rotate 12s linear infinite;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .menu-item:hover {
+      transform: scale(1.2);
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.8), rgba(238, 90, 36, 0.8));
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      animation-play-state: paused;
+    }
+
+    /* 각 메뉴 아이템의 애니메이션 딜레이 */
+    .menu-item:nth-child(2) { animation-delay: 0s; }
+    .menu-item:nth-child(3) { animation-delay: -1.5s; }
+    .menu-item:nth-child(4) { animation-delay: -3s; }
+    .menu-item:nth-child(5) { animation-delay: -4.5s; }
+    .menu-item:nth-child(6) { animation-delay: -6s; }
+    .menu-item:nth-child(7) { animation-delay: -7.5s; }
+    .menu-item:nth-child(8) { animation-delay: -9s; }
+    .menu-item:nth-child(9) { animation-delay: -10.5s; }
+
+    @keyframes spiral-rotate {
+      0% {
+        transform: rotate(0deg) translateX(180px) rotate(0deg) scale(0.8);
+        opacity: 0.7;
+      }
+      25% {
+        transform: rotate(90deg) translateX(160px) rotate(-90deg) scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: rotate(180deg) translateX(200px) rotate(-180deg) scale(1.1);
+        opacity: 1;
+      }
+      75% {
+        transform: rotate(270deg) translateX(170px) rotate(-270deg) scale(1);
+        opacity: 0.9;
+      }
+      100% {
+        transform: rotate(360deg) translateX(180px) rotate(-360deg) scale(0.8);
+        opacity: 0.7;
+      }
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: var(--white);
+      color: var(--primary-color);
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    }
+
+    /* 기능 섹션 */
+    .features {
+      padding: 6rem 2rem;
+      background: var(--light-bg);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 4rem;
+      color: var(--text-dark);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: var(--white);
+      padding: 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      border: 1px solid rgba(102, 126, 234, 0.1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-dark);
+    }
+
+    .feature-card p {
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* 통계 섹션 */
+    .stats {
+      padding: 6rem 2rem;
+      background: var(--gradient);
+      color: white;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      text-align: center;
+    }
+
+    .stat-item {
+      padding: 2rem;
+    }
+
+    .stat-number {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      font-weight: 500;
+    }
+
+    /* 푸터 */
+    .footer {
+      background: var(--text-dark);
+      color: white;
+      padding: 4rem 2rem 2rem;
+      text-align: center;
+    }
+
+    .footer h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer p {
+      opacity: 0.8;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .social-links a {
+      display: inline-block;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+
+    .social-links a:hover {
+      background: var(--primary-color);
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      opacity: 0.6;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 2rem;
+    }
+
+    /* 모바일 반응형 */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 1rem;
+      }
+      
+      .nav-links {
+        gap: 1rem;
+      }
+      
+      .hero {
+        padding: 2rem 1rem;
+      }
+      
+      .features {
+        padding: 4rem 1rem;
+      }
+      
+      .stats {
+        padding: 4rem 1rem;
+      }
+      
+      .footer {
+        padding: 3rem 1rem 2rem;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 스크롤 애니메이션 */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <!-- 네비게이션 -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">Malrang</div>
+      <ul class="nav-links">
+        <li><a href="#hero">홈</a></li>
+        <li><a href="#features">기능</a></li>
+        <li><a href="#stats">통계</a></li>
+        <li><a href="#contact">연락처</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 히어로 섹션 -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <h1>꿈을 현실로 만드는<br>새싹펀딩 플랫폼</h1>
+      <p>혁신적인 아이디어와 열정적인 서포터들을 연결하는 Malrang에서<br>당신의 프로젝트를 세상에 펼쳐주세요</p>
+      <a href="#features" class="cta-button">지금 시작하기</a>
+    </div>
+  </section>
+
+  <!-- 기능 섹션 -->
+  <section class="features" id="features">
+    <div class="container">
+      <h2 class="section-title fade-in">왜 Malrang인가요?</h2>
+      <div class="features-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🚀</div>
+          <h3>쉬운 프로젝트 론칭</h3>
+          <p>직관적인 인터페이스로 몇 분 만에 펀딩 프로젝트를 시작할 수 있습니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">💎</div>
+          <h3>투명한 수수료</h3>
+          <p>숨겨진 비용 없는 명확한 수수료 구조로 예측 가능한 펀딩 경험을 제공합니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🎯</div>
+          <h3>타겟 마케팅</h3>
+          <p>AI 기반 추천 시스템으로 당신의 프로젝트에 관심 있는 후원자들을 정확히 찾아드립니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🛡️</div>
+          <h3>안전한 결제</h3>
+          <p>은행급 보안 시스템과 다양한 결제 옵션으로 안전하고 편리한 펀딩을 지원합니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">📊</div>
+          <h3>실시간 분석</h3>
+          <p>펀딩 진행 상황을 실시간으로 추적하고 상세한 분석 리포트를 제공합니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🤝</div>
+          <h3>커뮤니티 지원</h3>
+          <p>활발한 크리에이터 커뮤니티와 전문 멘토링으로 성공적인 펀딩을 도와드립니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 통계 섹션 -->
+  <section class="stats" id="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-target="10000">0</div>
+          <div class="stat-label">성공한 프로젝트</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-target="500">0</div>
+          <div class="stat-label">총 펀딩 금액 (억원)</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-target="250">0</div>
+          <div class="stat-label">활성 사용자 (만명)</div>
+        </div>
+        <div class="stat-item fade-in">
+          <div class="stat-number" data-target="95">0</div>
+          <div class="stat-label">성공률 (%)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 푸터 -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <h3>Malrang</h3>
+      <p>당신의 꿈을 현실로 만들어가는 파트너<br>혁신적인 새싹펀딩 플랫폼</p>
+      <div class="social-links">
+        <a href="#" aria-label="Facebook">📘</a>
+        <a href="#" aria-label="Instagram">📸</a>
+        <a href="#" aria-label="Twitter">🐦</a>
+        <a href="#" aria-label="LinkedIn">💼</a>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 Malrang. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 네비게이션 스크롤 효과
+    const navbar = document.querySelector('.navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+      } else {
+        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+        navbar.style.boxShadow = 'none';
+      }
+    });
+
+    // 스크롤 애니메이션
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    // 모든 fade-in 요소를 관찰
+    document.querySelectorAll('.fade-in').forEach(el => {
+      observer.observe(el);
+    });
+
+    // 통계 카운터 애니메이션
+    const animateCounter = (element, target, suffix = '') => {
+      let current = 0;
+      const increment = target / 100;
+      const duration = 2000;
+      const stepTime = duration / 100;
+
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        
+        let displayValue = Math.floor(current);
+        if (suffix === '억원' || suffix === '만명') {
+          element.textContent = displayValue.toLocaleString() + (suffix === '억원' ? '억원' : '만');
+        } else if (suffix === '%') {
+          element.textContent = displayValue + '%';
+        } else {
+          element.textContent = displayValue.toLocaleString() + '+';
+        }
+      }, stepTime);
+    };
+
+    // 통계 섹션 관찰
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const statNumbers = entry.target.querySelectorAll('.stat-number');
+          
+          animateCounter(statNumbers[0], 10000, '+');
+          animateCounter(statNumbers[1], 500, '억원');
+          animateCounter(statNumbers[2], 250, '만명');
+          animateCounter(statNumbers[3], 95, '%');
+          
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    const statsSection = document.querySelector('.stats');
+    if (statsSection) {
+      statsObserver.observe(statsSection);
+    }
+
+    // 부드러운 스크롤
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          const offsetTop = target.offsetTop - 80;
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+Smart, efficient model for everyday use 자세히 알아보기
