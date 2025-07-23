@@ -15,7 +15,7 @@
     :root {
       --primary-color: #667eea;
       --secondary-color: #764ba2;
-      --accent-color: #f093fb;
+      --accent-color: hsl(29, 99%, 53%);
       --text-dark: #2d3748;
       --text-light: #718096;
       --white: #ffffff;
@@ -161,22 +161,133 @@
       line-height: 1.6;
     }
 
-    .cta-button {
-      display: inline-block;
-      padding: 1rem 2.5rem;
-      background: var(--white);
-      color: var(--primary-color);
-      text-decoration: none;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 1.1rem;
-      transition: var(--transition);
-      box-shadow: var(--shadow);
+    /* 나선형 메뉴 컨테이너 */
+    .spiral-container {
+      position: relative;
+      width: 600px;
+      height: 600px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
     }
 
-    .cta-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    .center-logo {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      z-index: 10;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      text-decoration: none;
+    }
+
+    .center-logo:hover {
+      transform: scale(1.1);
+    }
+
+    .menu-item {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 11px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+      text-align: center;
+      line-height: 1.2;
+      left: 50%;
+      top: 50%;
+      margin-left: -40px;
+      margin-top: -40px;
+    }
+
+    .menu-item:hover {
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.8), rgba(238, 90, 36, 0.8));
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      transform: scale(1.1);
+      z-index: 20;
+    }
+
+    /* 고정된 위치로 각 메뉴 아이템 배치 */
+    .menu-item:nth-child(2) { 
+      transform: translateX(220px) translateY(-110px);
+      animation: gentle-pulse 3s ease-in-out infinite;
+      animation-delay: 0s;
+    }
+    .menu-item:nth-child(3) { 
+      transform: translateX(156px) translateY(156px);
+      animation: gentle-pulse 3s ease-in-out infinite;
+      animation-delay: 0.4s;
+    }
+    .menu-item:nth-child(4) { 
+      transform: translateX(-110px) translateY(220px);
+      animation: gentle-pulse 3s ease-in-out infinite;
+      animation-delay: 0.8s;
+    }
+    .menu-item:nth-child(5) { 
+      transform: translateX(-220px) translateY(110px);
+      animation: gentle-pulse 3s ease-in-out infinite;
+      animation-delay: 1.2s;
+    }
+    .menu-item:nth-child(6) { 
+      transform: translateX(-220px) translateY(-110px);
+      animation: gentle-pulse 3s ease-in-out infinite;
+      animation-delay: 1.6s;
+    }
+    .menu-item:nth-child(7) { 
+      transform: translateX(-156px) translateY(-156px);
+      animation: gentle-pulse 3s ease-in-out infinite;
+      animation-delay: 2.0s;
+    }
+    .menu-item:nth-child(8) { 
+      transform: translateX(110px) translateY(-220px);
+      animation: gentle-pulse 3s ease-in-out infinite;
+      animation-delay: 2.4s;
+    }
+    .menu-item:nth-child(9) { 
+      transform: translateX(220px) translateY(110px);
+      animation: gentle-pulse 3s ease-in-out infinite;
+      animation-delay: 2.8s;
+    }
+
+    /* 호버 시에도 위치 유지 */
+    .menu-item:nth-child(2):hover { transform: translateX(220px) translateY(-110px) scale(1.1); }
+    .menu-item:nth-child(3):hover { transform: translateX(156px) translateY(156px) scale(1.1); }
+    .menu-item:nth-child(4):hover { transform: translateX(-110px) translateY(220px) scale(1.1); }
+    .menu-item:nth-child(5):hover { transform: translateX(-220px) translateY(110px) scale(1.1); }
+    .menu-item:nth-child(6):hover { transform: translateX(-220px) translateY(-110px) scale(1.1); }
+    .menu-item:nth-child(7):hover { transform: translateX(-156px) translateY(-156px) scale(1.1); }
+    .menu-item:nth-child(8):hover { transform: translateX(110px) translateY(-220px) scale(1.1); }
+    .menu-item:nth-child(9):hover { transform: translateX(220px) translateY(110px) scale(1.1); }
+
+    @keyframes gentle-pulse {
+      0%, 100% {
+        opacity: 0.8;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      }
+      50% {
+        opacity: 1;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      }
     }
 
     /* 기능 섹션 */
@@ -212,11 +323,66 @@
       box-shadow: var(--shadow);
       transition: var(--transition);
       border: 1px solid rgba(102, 126, 234, 0.1);
+      position: relative;
+      overflow: hidden;
     }
 
     .feature-card:hover {
       transform: translateY(-10px);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    /* 캠페인 카드에 배경 이미지 효과 추가 */
+    .feature-card:first-child::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+    }
+
+    .feature-card:first-child:hover::before {
+      opacity: 1;
+    }
+
+    .feature-card:first-child::after {
+      content: '📷✨';
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    .feature-card:first-child:hover::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* 나눔가게 카드에 마켓플레이스 느낌 추가 */
+    .feature-card:nth-child(2)::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="market" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1" fill="rgba(255,193,7,0.3)"/><circle cx="15" cy="15" r="1" fill="rgba(40,167,69,0.3)"/></pattern></defs><rect width="100" height="100" fill="url(%23market)"/></svg>');
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+    }
+
+    .feature-card:nth-child(2):hover::before {
+      opacity: 1;
     }
 
     .feature-icon {
@@ -232,6 +398,8 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto 1.5rem;
+      position: relative;
+      z-index: 3;
     }
 
     .feature-card h3 {
@@ -239,11 +407,15 @@
       font-weight: 600;
       margin-bottom: 1rem;
       color: var(--text-dark);
+      position: relative;
+      z-index: 3;
     }
 
     .feature-card p {
       color: var(--text-light);
       line-height: 1.6;
+      position: relative;
+      z-index: 3;
     }
 
     /* 정기후원 섹션 */
@@ -498,38 +670,58 @@
       .hero {
         padding: 2rem 1rem;
       }
-      
-      .features {
-        padding: 4rem 1rem;
-      }
-      
-      .subscription {
-        padding: 6rem 1rem;
-      }
-      
-      .footer {
-        padding: 3rem 1rem 2rem;
-      }
-      
-      .features-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-      }
-      
-      .subscription-cards {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+
+      .hero-container {
+        flex-direction: column;
+        gap: 2rem;
       }
 
-      .benefits-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
+      .spiral-container {
+        width: 450px;
+        height: 450px;
       }
-    }
 
-    @media (max-width: 480px) {
-      .nav-links {
-        display: none;
+      .center-logo {
+        width: 100px;
+        height: 100px;
+        font-size: 16px;
+      }
+
+      .menu-item {
+        width: 65px;
+        height: 65px;
+        font-size: 9px;
+        margin-left: -32.5px;
+        margin-top: -32.5px;
+      }
+
+      /* 태블릿용 고정 위치 */
+      .menu-item:nth-child(2) { transform: translateX(160px) translateY(-80px); }
+      .menu-item:nth-child(2):hover { transform: translateX(160px) translateY(-80px) scale(1.1); }
+      .menu-item:nth-child(3) { transform: translateX(113px) translateY(113px); }
+      .menu-item:nth-child(3):hover { transform: translateX(113px) translateY(113px) scale(1.1); }
+      .menu-item:nth-child(4) { transform: translateX(-80px) translateY(160px); }
+      .menu-item:nth-child(4):hover { transform: translateX(-80px) translateY(160px) scale(1.1); }
+      .menu-item:nth-child(5) { transform: translateX(-160px) translateY(80px); }
+      .menu-item:nth-child(5):hover { transform: translateX(-160px) translateY(80px) scale(1.1); }
+      .menu-item:nth-child(6) { transform: translateX(-160px) translateY(-80px); }
+      .menu-item:nth-child(6):hover { transform: translateX(-120px) translateY(-60px) scale(1.1); }
+      .menu-item:nth-child(7) { transform: translateX(-85px) translateY(-85px); }
+      .menu-item:nth-child(7):hover { transform: translateX(-85px) translateY(-85px) scale(1.1); }
+      .menu-item:nth-child(8) { transform: translateX(60px) translateY(-120px); }
+      .menu-item:nth-child(8):hover { transform: translateX(60px) translateY(-120px) scale(1.1); }
+      .menu-item:nth-child(9) { transform: translateX(120px) translateY(60px); }
+      .menu-item:nth-child(9):hover { transform: translateX(120px) translateY(60px) scale(1.1); }
+
+      @keyframes gentle-pulse {
+        0%, 100% {
+          opacity: 0.8;
+          box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+        }
+        50% {
+          opacity: 1;
+          box-shadow: 0 5px 18px rgba(0,0,0,0.3);
+        }
       }
       
       .subscription-card {
@@ -566,10 +758,25 @@
 
   <!-- 히어로 섹션 -->
   <section class="hero" id="hero">
-    <div class="hero-content">
-      <h1>꿈을 현실로 만드는<br>새싹펀딩 플랫폼</h1>
-      <p>혁신적인 아이디어와 열정적인 서포터들을 연결하는 Malrang에서<br>당신의 프로젝트를 세상에 펼쳐주세요</p>
-      <a href="#features" class="cta-button">지금 시작하기</a>
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1>꿈을 현실로 만드는<br>새싹펀딩 플랫폼</h1>
+        <p>혁신적인 아이디어와 열정적인 서포터들을 연결하는 Malrang에서<br>당신의 프로젝트를 세상에 펼쳐주세요</p>
+      </div>
+
+      <!-- 나선형 메뉴 컨테이너 -->
+      <div class="spiral-container">
+        <a href="#" class="center-logo">Malrang</a>
+        <a href="#features" class="menu-item">캠페인</a>
+        <a href="#features" class="menu-item">나눔가게</a>
+        <a href="#features" class="menu-item">안전한<br>결제</a>
+        <a href="#features" class="menu-item">커뮤니티<br>지원</a>
+        <a href="#features" class="menu-item">실버방패<br>클럽</a>
+        <a href="#features" class="menu-item">골드방패<br>클럽</a>
+        <a href="#subscription" class="menu-item">정기<br>후원</a>
+        <a href="#subscription" class="menu-item">일시<br>후원</a>
+        <a href="#subscription" class="menu-item">결연<br>후원</a>
+      </div>
     </div>
   </section>
 
@@ -579,19 +786,14 @@
       <h2 class="section-title fade-in">왜 Malrang인가요?</h2>
       <div class="features-grid">
         <div class="feature-card fade-in">
-          <div class="feature-icon">🚀</div>
-          <h3>쉬운 프로젝트 론칭</h3>
-          <p>직관적인 인터페이스로 몇 분 만에 펀딩 프로젝트를 시작할 수 있습니다.</p>
+          <div class="feature-icon">📸</div>
+          <h3>캠페인</h3>
+          <p>사진과 함께 감동적인 스토리를 전달하여 더 많은 공감과 후원을 이끌어내세요.</p>
         </div>
         <div class="feature-card fade-in">
-          <div class="feature-icon">💎</div>
-          <h3>투명한 수수료</h3>
-          <p>숨겨진 비용 없는 명확한 수수료 구조로 예측 가능한 펀딩 경험을 제공합니다.</p>
-        </div>
-        <div class="feature-card fade-in">
-          <div class="feature-icon">🎯</div>
-          <h3>타겟 마케팅</h3>
-          <p>AI 기반 추천 시스템으로 당신의 프로젝트에 관심 있는 후원자들을 정확히 찾아드립니다.</p>
+          <div class="feature-icon">🛍️</div>
+          <h3>나눔가게</h3>
+          <p>아나바다처럼 자유롭게 거래하고 나누는 커뮤니티 공간에서 새로운 인연을 만들어보세요.</p>
         </div>
         <div class="feature-card fade-in">
           <div class="feature-icon">🛡️</div>
@@ -599,14 +801,19 @@
           <p>은행급 보안 시스템과 다양한 결제 옵션으로 안전하고 편리한 펀딩을 지원합니다.</p>
         </div>
         <div class="feature-card fade-in">
-          <div class="feature-icon">📊</div>
-          <h3>실시간 분석</h3>
-          <p>펀딩 진행 상황을 실시간으로 추적하고 상세한 분석 리포트를 제공합니다.</p>
-        </div>
-        <div class="feature-card fade-in">
           <div class="feature-icon">🤝</div>
           <h3>커뮤니티 지원</h3>
-          <p>활발한 크리에이터 커뮤니티와 전문 멘토링으로 성공적인 펀딩을 도워드립니다.</p>
+          <p>활발한 크리에이터 커뮤니티와 전문 멘토링으로 성공적인 펀딩을 도와드립니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🏆</div>
+          <h3>실버방패클럽</h3>
+          <p>월 50만원 이상 기부하시는 고액기부자분들을 위한 특별한 혜택과 인정을 제공합니다.</p>
+        </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">👑</div>
+          <h3>골드방패클럽</h3>
+          <p>월 100만원 이상 기부하시는 최고 후원자분들을 위한 VIP 서비스와 명예를 드립니다.</p>
         </div>
       </div>
     </div>
@@ -624,27 +831,27 @@
         
         <div class="subscription-cards">
           <div class="subscription-card fade-in">
-            <div class="card-icon">🌱</div>
-            <h3 class="card-title">새싹 서포터</h3>
-            <p class="card-description">작은 시작이지만 소중한 변화의 씨앗이 되어주세요</p>
+            <div class="card-icon">💝</div>
+            <h3 class="card-title">정기후원</h3>
+            <p class="card-description">매월 꾸준한 후원으로 지속가능한 변화를 만들어주세요</p>
             <div class="card-price">5,000원</div>
             <div class="card-period">매월</div>
             <a href="#" class="subscription-button">후원하기</a>
           </div>
           
           <div class="subscription-card fade-in">
-            <div class="card-icon">🌿</div>
-            <h3 class="card-title">성장 서포터</h3>
-            <p class="card-description">꿈을 키우는 든든한 지원군이 되어주세요</p>
-            <div class="card-price">10,000원</div>
-            <div class="card-period">매월</div>
+            <div class="card-icon">💖</div>
+            <h3 class="card-title">일시후원</h3>
+            <p class="card-description">필요한 순간에 마음을 전달하는 소중한 후원</p>
+            <div class="card-price">자유금액</div>
+            <div class="card-period">1회성</div>
             <a href="#" class="subscription-button">후원하기</a>
           </div>
           
           <div class="subscription-card fade-in">
-            <div class="card-icon">🌳</div>
-            <h3 class="card-title">숲 서포터</h3>
-            <p class="card-description">크고 넓은 변화의 터전을 만들어주세요</p>
+            <div class="card-icon">🤝</div>
+            <h3 class="card-title">결연후원</h3>
+            <p class="card-description">특정 대상과의 1:1 결연으로 더 깊은 유대관계를 형성</p>
             <div class="card-price">30,000원</div>
             <div class="card-period">매월</div>
             <a href="#" class="subscription-button">후원하기</a>
@@ -741,7 +948,14 @@
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
+        const targetId = this.getAttribute('href');
+        
+        // href가 '#'만 있는 경우 처리하지 않음
+        if (targetId === '#' || targetId.length <= 1) {
+          return;
+        }
+        
+        const target = document.querySelector(targetId);
         if (target) {
           const offsetTop = target.offsetTop - 80;
           window.scrollTo({
