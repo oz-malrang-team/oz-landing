@@ -1,11 +1,10 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Malrang - 당신의 따뜻한 손길이 아이들의 꿈을 지킵니다</title>
   <meta name="description" content="Malrang은 마음이 어우러지는 연결입니다, 따뜻하고 부드러운 마음을 함께 해요.">
-  <link rel="stylesheet" href="styles.css">
   <style>
     * {
       margin: 0;
@@ -98,10 +97,14 @@
       width: 100%;
     }
 
-    /* 히어로 섹션 */
+
+      /* 히어로 섹션 */
     .hero {
       min-height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: url("img/image03.png");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -128,7 +131,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="20" cy="80" r="0.5" fill="white" opacity="0.1"/><circle cx="80" cy="20" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      background: url('malrang/img/Gemini_Generated_Image06.png');
       animation: float 20s ease-in-out infinite;
     }
 
@@ -171,6 +174,15 @@
       justify-content: center;
       align-items: center;
       z-index: 2;
+      background: 
+        linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%),
+        url('img/Generated_Image_\ \(6\).png');
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(5px);
     }
 
     .center-logo {
@@ -200,9 +212,9 @@
       position: absolute;
       width: 80px;
       height: 80px;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.4);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -219,6 +231,7 @@
       top: 50%;
       margin-left: -40px;
       margin-top: -40px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
 
     .menu-item:hover {
@@ -762,7 +775,7 @@
     <div class="hero-container">
       <div class="hero-content">
         <h1>꿈을 현실로 만드는<br>새싹펀딩 플랫폼</h1>
-        <p>혁신적인 아이디어와 열정적인 서포터들을 연결하는 Malrang에서<br>마음이 어우러지는 연결, 따뜻하고 부드러운 마음을 함께 해요.</p>
+        <p>혁신적인 아이디어와 열정적인 서포터들을 연결하는 말랑에서<br>함께 만들어가요</p>
       </div>
 
       <!-- 나선형 메뉴 컨테이너 -->
@@ -796,7 +809,7 @@
         <div class="feature-card fade-in">
           <div class="feature-icon">🛍️</div>
            <!-- 이미지 삽입 -->
-        <img src="img/Image04.png" alt="Disaster Relief Donation">
+  <img src="img/Gemini_Generated_Image04.png" alt="Disaster Relief Donation">
           <h3>나눔가게</h3>
           <p>아나바다처럼 자유롭게 거래하고 나누는 커뮤니티 공간에서 새로운 인연을 만들어보세요.</p>
         </div>
@@ -904,7 +917,7 @@
   <footer class="footer" id="contact">
     <div class="container">
       <h3>Malrang</h3>
-      <p>당신의 꿈을 현실로 만들어가는 파트너<br>혁신적인 새싹펀딩 플랫폼</p>
+      <p>당신의 꿈을 현실로 만들어가는 친구<br>혁신적인 새싹펀딩 플랫폼</p>
       <div class="social-links">
         <a href="#" aria-label="Facebook">📘</a>
         <a href="#" aria-label="Instagram">📸</a>
