@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 - 함께 나누는 이야기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        main {
+            padding: 2rem 0;
+        }
+
+        .hero {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .content-area {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .post-form {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .post-form h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .categories {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            background: rgba(102, 126, 234, 0.1);
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-box {
+            margin-bottom: 2rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e1e8f0;
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .posts {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .post {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .post-category {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .post-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .post h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        .post-author {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-content {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .post-actions button {
+            background: none;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .post-actions button:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .comments {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .comment {
+            background: #f8f9ff;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .sidebar-item {
+            padding: 0.8rem;
+            background: linear-gradient(135deg, #f8f9ff, #e8edff);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-item:hover {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @media (max-width: 768px) {
+            .content-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .categories {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">✨ 커뮤니티</div>
+            <div class="nav-links">
+                <a href="#" onclick="showSection('home')">홈</a>
+                <a href="#" onclick="showSection('popular')">인기글</a>
+                <a href="#" onclick="showSection('recent')">최신글</a>
+                <a href="#" onclick="showSection('my')">내 글</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="hero">
+            <h1>함께 나누는 이야기</h1>
+            <p>다양한 주제로 소통하고 새로운 인사이트를 발견해보세요</p>
+        </div>
+
+        <div class="content-area">
+            <div class="main-content">
+                <div class="post-form">
+                    <h3>새 게시글 작성</h3>
+                    <form id="postForm">
+                        <div class="form-group">
+                            <label>카테고리</label>
+                            <select id="postCategory" required>
+                                <option value="">카테고리를 선택하세요</option>
+                                <option value="자유">자유</option>
+                                <option value="기술">기술</option>
+                                <option value="일상">일상</option>
+                                <option value="질문">질문</option>
+                                <option value="리뷰">리뷰</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>제목</label>
+                            <input type="text" id="postTitle" placeholder="제목을 입력하세요" required>
+                        </div>
+                        <div class="form-group">
+                            <label>작성자</label>
+                            <input type="text" id="postAuthor" placeholder="닉네임을 입력하세요" required>
+                        </div>
+                        <div class="form-group">
+                            <label>내용</label>
+                            <textarea id="postContent" placeholder="내용을 입력하세요" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">게시글 작성</button>
+                    </form>
+                </div>
+
+                <div class="categories">
+                    <button class="category-btn active" onclick="filterByCategory('all')">전체</button>
+                    <button class="category-btn" onclick="filterByCategory('자유')">자유</button>
+                    <button class="category-btn" onclick="filterByCategory('기술')">기술</button>
+                    <button class="category-btn" onclick="filterByCategory('일상')">일상</button>
+                    <button class="category-btn" onclick="filterByCategory('질문')">질문</button>
+                    <button class="category-btn" onclick="filterByCategory('리뷰')">리뷰</button>
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="🔍 게시글 검색..." onkeyup="searchPosts()">
+                </div>
+
+                <div class="posts" id="postsList">
+                    <!-- 게시글들이 여기에 표시됩니다 -->
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <h3>📊 커뮤니티 통계</h3>
+                <div class="sidebar-item">
+                    <strong>총 게시글:</strong> <span id="totalPosts">0</span>개
+                </div>
+                <div class="sidebar-item">
+                    <strong>오늘 작성:</strong> <span id="todayPosts">0</span>개
+                </div>
+                <div class="sidebar-item">
+                    <strong>총 댓글:</strong> <span id="totalComments">0</span>개
+                </div>
+
+                <h3 style="margin-top: 2rem;">🔥 인기 카테고리</h3>
+                <div id="popularCategories">
+                </div>
+
+                <h3 style="margin-top: 2rem;">💡 커뮤니티 팁</h3>
+                <div class="sidebar-item">
+                    <strong>예의 지키기:</strong> 서로 존중하는 대화를 나눠요
+                </div>
+                <div class="sidebar-item">
+                    <strong>명확한 제목:</strong> 내용을 잘 표현하는 제목을 작성해주세요
+                </div>
+                <div class="sidebar-item">
+                    <strong>적절한 카테고리:</strong> 맞는 카테고리를 선택해주세요
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 데이터 저장소 (메모리 기반)
+        let posts = [
+            {
+                id: 1,
+                category: '잡담',
+                title: '자유로운 소감 이야기',
+                author: '관리자',
+                content: '후원자 여러분, 여러분의 소중한 후원이 이렇게 많은 사람들에게 행복을 주고 있다는 사실을 알고 계셨나요? 여러분의 작은 정성이 큰 변화를 만들어가고 있습니다. 감사합니다!',
+                date: new Date('2025-07-25'),
+                likes: 15,
+                comments: [
+                    { author: '후원자1', content: ' 제 후원으로 인해서 누군가가 행복해질수 있다는게 기쁘네요 ' },
+                    { author: '아름이팬', content: '막연하게 후원을 할때는 제 돈이 어떻게 쓰일지 몰랐는데, 투명하게 다 보여지고있고 후원을 하고보니 기쁨이 두배가 되어 돌아왔어요.' }
+                ]
+            },
+            {
+                id: 2,
+                category: '일상',
+                title: '오늘 날씨가 정말 좋네요 ☀️',
+                author: '햇살이',
+                content: '창밖을 보니 하늘이 너무 맑고 예뻐서 기분이 좋아졌어요. 여러분도 좋은 하루 보내세요!',
+                date: new Date('2025-07-24'),
+                likes: 8,
+                comments: [
+                    { author: '구름이', content: '저도 산책하고 싶어지네요!' }
+                ]
+            },
+            {
+                id: 3,
+                category: '질문',
+                title: '좋은 습관을 기르려면?',
+                author: '시각을 잃은 아이',
+                content: '부모님을 일찍 여의고 할머니와 살고 있습니다. 좋은 습관을 기르려면 어떻게 해야 할까요? 저는 요즘 라디오 공부를 시작했는데, 눈이 안보여도 꾸준히 할 수 있는 방법이 있을까요?',
+                date: new Date('2025-07-24'),
+                likes: 23,
+                comments: [
+                    { author: '대기업 후원자3', content: '요즘에 다양한 정보를 수집할수 있는 웨어러블 기기가 많이 나와서요, 그걸로 학습을 해보는것은 어떨까요?' },
+                    { author: '아동심리상담사', content: '불편한데도 공부를 하겠다는 것은 엄청 대단하다고 생각해요, 제 대안을 말씀드리자면 활자를 만져가면서 촉각으로 공부를 하는 방법도 있고, 샌드아트로 예술을 시도해보는 것도 좋은 방법이라고 생각해요.  ' }
+                ]
+            }
+        ];
+
+        let currentFilter = 'all';
+        let nextId = 4;
+
+        // 페이지 로드 시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            displayPosts();
+            updateStats();
+            updatePopularCategories();
+        });
+
+        // 게시글 폼 제출
+        document.getElementById('postForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const category = document.getElementById('postCategory').value;
+            const title = document.getElementById('postTitle').value;
+            const author = document.getElementById('postAuthor').value;
+            const content = document.getElementById('postContent').value;
+
+            const newPost = {
+                id: nextId++,
+                category,
+                title,
+                author,
+                content,
+                date: new Date(),
+                likes: 0,
+                comments: []
+            };
+
+            posts.unshift(newPost);
+            displayPosts();
+            updateStats();
+            updatePopularCategories();
+            
+            // 폼 초기화
+            this.reset();
+            
+            // 성공 메시지 (간단한 알림)
+            alert('게시글이 성공적으로 작성되었습니다! 🎉');
+        });
+
+        // 게시글 표시
+        function displayPosts() {
+            const postsList = document.getElementById('postsList');
+            const filteredPosts = currentFilter === 'all' ? posts : posts.filter(post => post.category === currentFilter);
+            
+            postsList.innerHTML = filteredPosts.map(post => `
+                <div class="post animate-in">
+                    <div class="post-header">
+                        <span class="post-category">${post.category}</span>
+                        <span class="post-date">${formatDate(post.date)}</span>
+                    </div>
+                    <h4>${post.title}</h4>
+                    <div class="post-author">👤 ${post.author}</div>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-actions">
+                        <button onclick="likePost(${post.id})">👍 좋아요 (${post.likes})</button>
+                        <button onclick="toggleComments(${post.id})">💬 댓글 (${post.comments.length})</button>
+                    </div>
+                    <div class="comments" id="comments-${post.id}" style="display: none;">
+                        ${post.comments.map(comment => `
+                            <div class="comment">
+                                <div class="comment-author">${comment.author}</div>
+                                <div>${comment.content}</div>
+                            </div>
+                        `).join('')}
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <input type="text" id="comment-author-${post.id}" placeholder="닉네임" style="margin-bottom: 0.5rem;">
+                            <textarea id="comment-content-${post.id}" placeholder="댓글을 입력하세요..." style="margin-bottom: 0.5rem;"></textarea>
+                            <button class="btn" onclick="addComment(${post.id})" style="font-size: 0.9rem; padding: 0.5rem 1rem;">댓글 작성</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 카테고리 필터링
+        function filterByCategory(category) {
+            currentFilter = category;
+            
+            // 버튼 스타일 업데이트
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            displayPosts();
+        }
+
+        // 게시글 검색
+        function searchPosts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const postsList = document.getElementById('postsList');
+            
+            const filteredPosts = posts.filter(post => 
+                post.title.toLowerCase().includes(searchTerm) ||
+                post.content.toLowerCase().includes(searchTerm) ||
+                post.author.toLowerCase().includes(searchTerm)
+            );
+            
+            postsList.innerHTML = filteredPosts.map(post => `
+                <div class="post animate-in">
+                    <div class="post-header">
+                        <span class="post-category">${post.category}</span>
+                        <span class="post-date">${formatDate(post.date)}</span>
+                    </div>
+                    <h4>${post.title}</h4>
+                    <div class="post-author">👤 ${post.author}</div>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-actions">
+                        <button onclick="likePost(${post.id})">👍 좋아요 (${post.likes})</button>
+                        <button onclick="toggleComments(${post.id})">💬 댓글 (${post.comments.length})</button>
+                    </div>
+                    <div class="comments" id="comments-${post.id}" style="display: none;">
+                        ${post.comments.map(comment => `
+                            <div class="comment">
+                                <div class="comment-author">${comment.author}</div>
+                                <div>${comment.content}</div>
+                            </div>
+                        `).join('')}
+                        <div class="form-group" style="margin-top: 1rem;">
+                            <input type="text" id="comment-author-${post.id}" placeholder="닉네임" style="margin-bottom: 0.5rem;">
+                            <textarea id="comment-content-${post.id}" placeholder="댓글을 입력하세요..." style="margin-bottom: 0.5rem;"></textarea>
+                            <button class="btn" onclick="addComment(${post.id})" style="font-size: 0.9rem; padding: 0.5rem 1rem;">댓글 작성</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 좋아요 기능
+        function likePost(postId) {
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.likes++;
+                displayPosts();
+            }
+        }
+
+        // 댓글 토글
+        function toggleComments(postId) {
+            const commentsDiv = document.getElementById(`comments-${postId}`);
+            commentsDiv.style.display = commentsDiv.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // 댓글 추가
+        function addComment(postId) {
+            const authorInput = document.getElementById(`comment-author-${postId}`);
+            const contentInput = document.getElementById(`comment-content-${postId}`);
+            
+            const author = authorInput.value.trim();
+            const content = contentInput.value.trim();
+            
+            if (author && content) {
+                const post = posts.find(p => p.id === postId);
+                if (post) {
+                    post.comments.push({ author, content });
+                    authorInput.value = '';
+                    contentInput.value = '';
+                    displayPosts();
+                    updateStats();
+                    
+                    // 댓글이 추가된 후 댓글 영역 다시 열기
+                    setTimeout(() => {
+                        document.getElementById(`comments-${postId}`).style.display = 'block';
+                    }, 100);
+                }
+            } else {
+                alert('닉네임과 댓글 내용을 모두 입력해주세요.');
+            }
+        }
+
+        // 통계 업데이트
+        function updateStats() {
+            const today = new Date().toDateString();
+            const todayPosts = posts.filter(post => post.date.toDateString() === today).length;
+            const totalComments = posts.reduce((sum, post) => sum + post.comments.length, 0);
+            
+            document.getElementById('totalPosts').textContent = posts.length;
+            document.getElementById('todayPosts').textContent = todayPosts;
+            document.getElementById('totalComments').textContent = totalComments;
+        }
+
+        // 인기 카테고리 업데이트
+        function updatePopularCategories() {
+            const categoryCount = {};
+            posts.forEach(post => {
+                categoryCount[post.category] = (categoryCount[post.category] || 0) + 1;
+            });
+            
+            const sortedCategories = Object.entries(categoryCount)
+                .sort(([,a], [,b]) => b - a)
+                .slice(0, 3);
+            
+            const popularCategoriesDiv = document.getElementById('popularCategories');
+            popularCategoriesDiv.innerHTML = sortedCategories.map(([category, count]) => `
+                <div class="sidebar-item">
+                    <strong>${category}:</strong> ${count}개
+                </div>
+            `).join('');
+        }
+
+        // 날짜 포맷팅
+        function formatDate(date) {
+            const now = new Date();
+            const diff = now - date;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            
+            if (hours < 1) {
+                const minutes = Math.floor(diff / (1000 * 60));
+                return `${minutes}분 전`;
+            } else if (hours < 24) {
+                return `${hours}시간 전`;
+            } else {
+                return date.toLocaleDateString('ko-KR');
+            }
+        }
+
+        // 섹션 표시 (네비게이션용)
+        function showSection(section) {
+            switch(section) {
+                case 'popular':
+                    posts.sort((a, b) => b.likes - a.likes);
+                    break;
+                case 'recent':
+                    posts.sort((a, b) => b.date - a.date);
+                    break;
+                case 'home':
+                default:
+                    posts.sort((a, b) => b.date - a.date);
+                    break;
+            }
+            displayPosts();
+        }
+    </script>
+</body>
+</html>

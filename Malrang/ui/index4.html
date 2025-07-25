@@ -97,14 +97,10 @@
       width: 100%;
     }
 
-
-      /* 히어로 섹션 */
+    /* 히어로 섹션 */
     .hero {
       min-height: 100vh;
-      background: url("img/image03.png");
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ff9a8b 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -114,16 +110,6 @@
       overflow: hidden;
     }
 
-    .hero-container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1400px;
-      width: 100%;
-      padding: 0 2rem;
-      gap: 4rem;
-    }
-
     .hero::before {
       content: '';
       position: absolute;
@@ -131,7 +117,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: url('malrang/img/Gemini_Generated_Image06.png');
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="1" fill="rgba(255,255,255,0.3)"/><circle cx="15" cy="15" r="1" fill="rgba(255,255,255,0.2)"/><circle cx="10" cy="18" r="0.5" fill="rgba(255,255,255,0.4)"/></pattern></defs><rect width="100" height="100" fill="url(%23stars)"/></svg>');
       animation: float 20s ease-in-out infinite;
     }
 
@@ -142,9 +128,19 @@
       75% { transform: translate(-5px, 10px) rotate(0.5deg); }
     }
 
-    .hero-content {
+    .hero-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1400px;
+      width: 100%;
+      padding: 0 2rem;
+      gap: 4rem;
       z-index: 2;
       position: relative;
+    }
+
+    .hero-content {
       max-width: 600px;
       padding: 2rem;
       text-align: left;
@@ -173,12 +169,10 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 2;
       background: 
         linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%),
-        url('img/Generated_Image_\ \(6\).png');
-      background-size: cover;
-      background-position: center;
+        radial-gradient(circle at 30% 30%, rgba(255, 107, 107, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(78, 205, 196, 0.3) 0%, transparent 50%);
       border-radius: 50%;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       border: 3px solid rgba(255, 255, 255, 0.2);
@@ -414,6 +408,35 @@
       margin: 0 auto 1.5rem;
       position: relative;
       z-index: 3;
+    }
+
+    .feature-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      border-radius: 15px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .feature-image:nth-child(1) {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .feature-image:nth-child(2) {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+
+    .feature-image:nth-child(3) {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     }
 
     .feature-card h3 {
@@ -709,7 +732,7 @@
         margin-top: -32.5px;
       }
 
-      /* 태블릿용 고정 위치 */
+      /* 모바일용 고정 위치 */
       .menu-item:nth-child(2) { transform: translateX(160px) translateY(-80px); }
       .menu-item:nth-child(2):hover { transform: translateX(160px) translateY(-80px) scale(1.1); }
       .menu-item:nth-child(3) { transform: translateX(113px) translateY(113px); }
@@ -719,24 +742,13 @@
       .menu-item:nth-child(5) { transform: translateX(-160px) translateY(80px); }
       .menu-item:nth-child(5):hover { transform: translateX(-160px) translateY(80px) scale(1.1); }
       .menu-item:nth-child(6) { transform: translateX(-160px) translateY(-80px); }
-      .menu-item:nth-child(6):hover { transform: translateX(-120px) translateY(-60px) scale(1.1); }
-      .menu-item:nth-child(7) { transform: translateX(-85px) translateY(-85px); }
-      .menu-item:nth-child(7):hover { transform: translateX(-85px) translateY(-85px) scale(1.1); }
-      .menu-item:nth-child(8) { transform: translateX(60px) translateY(-120px); }
-      .menu-item:nth-child(8):hover { transform: translateX(60px) translateY(-120px) scale(1.1); }
-      .menu-item:nth-child(9) { transform: translateX(120px) translateY(60px); }
-      .menu-item:nth-child(9):hover { transform: translateX(120px) translateY(60px) scale(1.1); }
-
-      @keyframes gentle-pulse {
-        0%, 100% {
-          opacity: 0.8;
-          box-shadow: 0 3px 12px rgba(0,0,0,0.2);
-        }
-        50% {
-          opacity: 1;
-          box-shadow: 0 5px 18px rgba(0,0,0,0.3);
-        }
-      }
+      .menu-item:nth-child(6):hover { transform: translateX(-160px) translateY(-80px) scale(1.1); }
+      .menu-item:nth-child(7) { transform: translateX(-113px) translateY(-113px); }
+      .menu-item:nth-child(7):hover { transform: translateX(-113px) translateY(-113px) scale(1.1); }
+      .menu-item:nth-child(8) { transform: translateX(80px) translateY(-160px); }
+      .menu-item:nth-child(8):hover { transform: translateX(80px) translateY(-160px) scale(1.1); }
+      .menu-item:nth-child(9) { transform: translateX(160px) translateY(80px); }
+      .menu-item:nth-child(9):hover { transform: translateX(160px) translateY(80px) scale(1.1); }
       
       .subscription-card {
         padding: 2rem 1.5rem;
@@ -753,6 +765,43 @@
     .fade-in.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* 새로 추가된 스타일 */
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .cta-button:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .cta-button.primary {
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--primary-color);
+    }
+
+    .cta-button.primary:hover {
+      background: white;
+      color: var(--primary-color);
     }
   </style>
 </head>
@@ -775,7 +824,11 @@
     <div class="hero-container">
       <div class="hero-content">
         <h1>꿈을 현실로 만드는<br>새싹펀딩 플랫폼</h1>
-        <p>열정적인 서포터들이 모이고 모두가 함께 성장하는 말랑에서<br>함께 만들어가요</p>
+        <p>혁신적인 아이디어와 열정적인 서포터들을 연결하는 말랑에서<br>함께 만들어가요</p>
+        <div class="hero-cta">
+          <a href="#features" class="cta-button primary">서비스 둘러보기</a>
+          <a href="#subscription" class="cta-button">후원하기</a>
+        </div>
       </div>
 
       <!-- 나선형 메뉴 컨테이너 -->
@@ -800,28 +853,25 @@
       <h2 class="section-title fade-in">왜 Malrang인가요?</h2>
       <div class="features-grid">
         <div class="feature-card fade-in">
-          <div class="feature-icon">📸</div>
-          <!-- 이미지 삽입 -->
-  <img src="img/Generated_Image_ (4).png" alt="Disaster Relief Donation">
+          <div class="feature-image">📸</div>
+          <div class="feature-icon">📷</div>
           <h3>캠페인</h3>
           <p>사진과 함께 감동적인 스토리를 전달하여 더 많은 공감과 후원을 이끌어내세요.</p>
         </div>
         <div class="feature-card fade-in">
-          <div class="feature-icon">🛍️</div>
-           <!-- 이미지 삽입 -->
-  <img src="img/Gemini_Generated_Image04.png" alt="Disaster Relief Donation">
+          <div class="feature-image">🛍️</div>
+          <div class="feature-icon">🛒</div>
           <h3>나눔가게</h3>
           <p>아나바다처럼 자유롭게 거래하고 나누는 커뮤니티 공간에서 새로운 인연을 만들어보세요.</p>
         </div>
         <div class="feature-card fade-in">
-          <div class="feature-icon">🛡️</div>
-  <img src="img/Gemini_Generated_Image02.png" alt="Disaster Relief Donation">
+          <div class="feature-image">🛡️</div>
+          <div class="feature-icon">🔒</div>
           <h3>안전한 결제</h3>
           <p>은행급 보안 시스템과 다양한 결제 옵션으로 안전하고 편리한 펀딩을 지원합니다.</p>
         </div>
         <div class="feature-card fade-in">
-          <a href="ui/index3.html">
-  <div class="feature-icon">🤝</div> </a>
+          <div class="feature-icon">🤝</div>
           <h3>커뮤니티 지원</h3>
           <p>후원자와 후원인들을 위한 커뮤니티와 전문적인 시스템으로 정보 교류를 도와드립니다.</p>
         </div>
@@ -839,7 +889,7 @@
     </div>
   </section>
 
-       <!-- 정기후원 섹션 -->
+  <!-- 정기후원 섹션 -->
   <section class="subscription" id="subscription">
     <div class="container">
       <div class="subscription-content fade-in">
@@ -915,7 +965,7 @@
     </div>
   </section>
 
-       <!-- 푸터 -->
+  <!-- 푸터 -->
   <footer class="footer" id="contact">
     <div class="container">
       <h3>Malrang</h3>
@@ -983,6 +1033,35 @@
             behavior: 'smooth'
           });
         }
+      });
+    });
+
+    // 메뉴 아이템 클릭 효과
+    document.querySelectorAll('.menu-item, .center-logo').forEach(item => {
+      item.addEventListener('click', function(e) {
+        // 클릭 효과 애니메이션
+        this.style.transform = this.style.transform + ' scale(0.95)';
+        setTimeout(() => {
+          this.style.transform = this.style.transform.replace(' scale(0.95)', '');
+        }, 150);
+      });
+    });
+
+    // 구독 버튼 클릭 효과
+    document.querySelectorAll('.subscription-button, .cta-button').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // 버튼 클릭 애니메이션
+        this.style.transform = 'translateY(-2px) scale(0.98)';
+        setTimeout(() => {
+          this.style.transform = 'translateY(-2px) scale(1)';
+        }, 150);
+        
+        // 간단한 알림 (실제 구현에서는 실제 결제 시스템으로 연결)
+        setTimeout(() => {
+          alert('후원 페이지로 이동합니다. 감사합니다! 💝');
+        }, 200);
       });
     });
   </script>
