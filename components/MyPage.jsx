@@ -123,294 +123,198 @@ const MyPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       {/* 헤더 */}
-      <div className="bg-white px-5 py-4 shadow-sm sticky top-0 z-40">
+      <div className="bg-gray-800 px-5 py-4 shadow-sm sticky top-0 z-40 border-b border-gray-700">
         <div className="flex items-center gap-4">
           <button className="p-2">
-            <ArrowLeft size={20} className="text-gray-600" />
+            <ArrowLeft size={20} className="text-gray-300" />
           </button>
           <div className="flex-1">
-            <h1 className="text-lg font-bold text-gray-800">마이페이지</h1>
+            <h1 className="text-lg font-bold text-white">마이페이지</h1>
+            <p className="text-sm text-gray-400">나의 기부 활동을 확인해보세요</p>
           </div>
           <button className="p-2">
-            <Settings size={20} className="text-gray-600" />
+            <Settings size={20} className="text-gray-300" />
           </button>
         </div>
       </div>
 
       <div className="pb-6">
-        {/* 프로필 카드 */}
-        <div className="bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 p-6 m-5 rounded-3xl shadow-sm">
+        {/* 프로필 섹션 */}
+        <div className="bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 p-6 m-5 rounded-3xl shadow-lg border border-gray-600">
           <div className="text-center">
-            <div className="relative inline-block mb-4">
-              <div className="w-24 h-24 bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 rounded-full flex items-center justify-center text-4xl shadow-lg">
-                😊
-              </div>
-              <button className="absolute -bottom-1 -right-1 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md border-2 border-white">
-                <Edit size={14} className="text-gray-600" />
+            <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+              😊
+            </div>
+            <h2 className="text-xl font-bold text-white mb-2">마음씨님</h2>
+            <p className="text-gray-300 mb-4 text-sm">따뜻한 마음으로 기부하는 분</p>
+            <div className="flex justify-center gap-4">
+              <button className="bg-gray-700 text-gray-300 px-4 py-2 rounded-full text-sm hover:bg-gray-600 transition-colors border border-gray-600">
+                <Edit size={16} className="inline mr-2" />
+                프로필 수정
+              </button>
+              <button className="bg-gray-700 text-gray-300 px-4 py-2 rounded-full text-sm hover:bg-gray-600 transition-colors border border-gray-600">
+                <Share2 size={16} className="inline mr-2" />
+                공유하기
               </button>
             </div>
-            
-            <h2 className="text-2xl font-bold text-gray-800 mb-1">마음씨님</h2>
-            <p className="text-gray-600 text-sm mb-6">hearts@example.com</p>
-            
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-white/70 backdrop-blur-sm p-4 rounded-2xl">
-                <div className="text-2xl font-bold text-pink-600 mb-1">{donationHistory.length}</div>
-                <div className="text-xs text-gray-600">총 기부횟수</div>
-              </div>
-              <div className="bg-white/70 backdrop-blur-sm p-4 rounded-2xl">
-                <div className="text-lg font-bold text-pink-600 mb-1">{formatNumber(getTotalAmount())}원</div>
-                <div className="text-xs text-gray-600">총 기부금액</div>
-              </div>
-            </div>
-            
-            <div className="bg-gradient-to-r from-yellow-200 via-orange-200 to-pink-200 text-gray-800 py-3 px-6 rounded-2xl text-sm font-bold mb-4">
-              🏆 따뜻한 마음 단계
-            </div>
-            
-            <button className="bg-white/70 backdrop-blur-sm text-pink-600 border-2 border-pink-200 px-6 py-3 rounded-2xl font-medium hover:bg-white transition-colors">
-              프로필 수정
-            </button>
           </div>
         </div>
 
-        {/* 빠른 액션 */}
+        {/* 통계 카드 */}
         <div className="px-5 mb-6">
-          <div className="grid grid-cols-3 gap-3">
-            <button className="bg-white p-4 rounded-2xl shadow-sm flex flex-col items-center hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mb-2">
-                <Share2 size={20} className="text-pink-600" />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-gray-800 p-4 rounded-2xl border border-gray-700">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-500 rounded-xl flex items-center justify-center">
+                  <TrendingUp size={24} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-gray-400 text-sm">이번 달 기부</p>
+                  <p className="text-white font-bold text-lg">{formatNumber(getMonthlyAmount())}원</p>
+                </div>
               </div>
-              <span className="text-sm font-medium text-gray-700">내역 공유</span>
-            </button>
-            <button className="bg-white p-4 rounded-2xl shadow-sm flex flex-col items-center hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
-                <Download size={20} className="text-green-600" />
+            </div>
+            <div className="bg-gray-800 p-4 rounded-2xl border border-gray-700">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                  <Calendar size={24} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-gray-400 text-sm">이번 달 횟수</p>
+                  <p className="text-white font-bold text-lg">{getMonthlyCount()}회</p>
+                </div>
               </div>
-              <span className="text-sm font-medium text-gray-700">영수증 다운</span>
-            </button>
-            <button className="bg-white p-4 rounded-2xl shadow-sm flex flex-col items-center hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                <Bell size={20} className="text-blue-600" />
-              </div>
-              <span className="text-sm font-medium text-gray-700">알림 설정</span>
-            </button>
+            </div>
           </div>
         </div>
 
-        {/* 메뉴 탭 */}
+        {/* 탭 네비게이션 */}
         <div className="px-5 mb-6">
-          <div className="flex bg-gray-100 rounded-2xl p-1">
+          <div className="flex gap-2 bg-gray-800 p-1 rounded-2xl border border-gray-600">
             {[
-              { id: 'history', label: '기부 내역', icon: TrendingUp },
-              { id: 'receipts', label: '영수증', icon: Receipt },
-              { id: 'stats', label: '월별 통계', icon: Calendar }
+              { id: 'history', label: '기부 내역', icon: Receipt },
+              { id: 'stats', label: '통계', icon: TrendingUp },
+              { id: 'settings', label: '설정', icon: Settings }
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setSelectedTab(id)}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-2 rounded-xl transition-all duration-200 ${
-                  selectedTab === id 
-                    ? 'bg-white text-pink-600 shadow-sm transform scale-105' 
-                    : 'text-gray-600 hover:text-gray-800'
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200 ${
+                  selectedTab === id
+                    ? 'bg-pink-500 text-white shadow-lg'
+                    : 'text-gray-400 hover:text-gray-300'
                 }`}
               >
                 <Icon size={16} />
-                <span className="text-sm font-medium">{label}</span>
+                {label}
               </button>
             ))}
           </div>
         </div>
 
-        {/* 탭 콘텐츠 */}
-        <div className="px-5">
-          {selectedTab === 'history' && (
-            <div className="space-y-4">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold text-gray-800">최근 기부 활동</h3>
-                <button className="text-pink-600 text-sm font-medium">전체보기</button>
-              </div>
-              
-              {donationHistory.slice(0, 5).map(item => (
-                <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm border-l-4 border-pink-200 hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center text-xl">
-                      {item.emoji}
+        {/* 기부 내역 */}
+        {selectedTab === 'history' && (
+          <div className="px-5 space-y-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-bold text-white">기부 내역</h3>
+              <button className="text-pink-400 text-sm hover:text-pink-300 transition-colors">
+                전체보기
+              </button>
+            </div>
+            {donationHistory.map(item => (
+              <div key={item.id} className="bg-gray-800 rounded-2xl p-4 border border-gray-700 hover:border-gray-600 transition-colors">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-600 rounded-xl flex items-center justify-center text-2xl">
+                    {item.emoji}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h4 className="font-semibold text-white">{item.organization}</h4>
+                      <span className="text-pink-400 font-bold">{formatNumber(item.amount)}원</span>
                     </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-semibold text-gray-800">{item.organization}</h4>
-                        <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs">
-                          {item.category}
-                        </span>
-                      </div>
-                      <p className="text-gray-600 text-sm">{formatDate(item.date)}</p>
-                      <p className="text-gray-500 text-xs">영수증 {item.receipt ? '발급 완료' : '발급 대기'}</p>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-pink-600 font-bold text-lg">{formatNumber(item.amount)}원</div>
-                      <button className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-lg mt-1 hover:bg-green-200 transition-colors">
-                        영수증 보기
-                      </button>
+                    <div className="flex items-center gap-3 text-sm text-gray-400">
+                      <span>{formatDate(item.date)}</span>
+                      <span>•</span>
+                      <span>{item.category}</span>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {selectedTab === 'receipts' && (
-            <div className="space-y-4">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold text-gray-800">기부금 영수증</h3>
-                <button className="bg-blue-100 text-blue-700 text-sm px-4 py-2 rounded-lg font-medium hover:bg-blue-200 transition-colors">
-                  전체 다운로드
-                </button>
-              </div>
-              
-              {donationHistory.filter(item => item.receipt).map(item => (
-                <div key={item.id} className="bg-white p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                      <Receipt size={20} className="text-blue-600" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-gray-800 mb-1">{item.organization} 기부금 영수증</h4>
-                      <div className="flex items-center gap-4 text-sm text-gray-600">
-                        <span>{new Date(item.date).getFullYear()}년 {new Date(item.date).getMonth() + 1}월</span>
-                        <span>•</span>
-                        <span className="text-pink-600 font-medium">{formatNumber(item.amount)}원</span>
-                      </div>
-                      <p className="text-xs text-green-600 mt-1">발급완료</p>
-                    </div>
-                    <div className="flex gap-2">
-                      <button className="bg-gray-100 text-gray-700 text-sm px-3 py-2 rounded-lg hover:bg-gray-200 transition-colors">
-                        미리보기
-                      </button>
-                      <button className="bg-green-100 text-green-700 text-sm px-3 py-2 rounded-lg hover:bg-green-200 transition-colors">
-                        <Download size={16} />
-                      </button>
-                    </div>
+                  <div className="flex gap-2">
+                    <button className="p-2 text-gray-400 hover:text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+                      <Download size={16} />
+                    </button>
+                    <button className="p-2 text-gray-400 hover:text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+                      <ChevronRight size={16} />
+                    </button>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
+              </div>
+            ))}
+          </div>
+        )}
 
-          {selectedTab === 'stats' && (
-            <div className="space-y-6">
-              <div className="flex justify-between items-center">
-                <h3 className="text-lg font-bold text-gray-800">기부 통계</h3>
+        {/* 통계 */}
+        {selectedTab === 'stats' && (
+          <div className="px-5 space-y-6">
+            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
+              <h3 className="text-lg font-bold text-white mb-4">기부 통계</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">총 기부 금액</span>
+                  <span className="text-white font-bold text-lg">{formatNumber(getTotalAmount())}원</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">총 기부 횟수</span>
+                  <span className="text-white font-bold text-lg">{donationHistory.length}회</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400">자주 기부하는 곳</span>
+                  <span className="text-white font-bold">{getFavoriteOrganization()}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 설정 */}
+        {selectedTab === 'settings' && (
+          <div className="px-5 space-y-4">
+            <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <button 
-                    onClick={() => changeMonth(-1)}
-                    className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    ‹
-                  </button>
-                  <span className="text-sm font-medium text-gray-700 min-w-[80px] text-center">
-                    {currentMonth.year}년 {currentMonth.month}월
-                  </span>
-                  <button 
-                    onClick={() => changeMonth(1)}
-                    className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    ›
-                  </button>
+                  <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
+                    <User size={20} className="text-gray-300" />
+                  </div>
+                  <span className="text-white font-medium">계정 정보</span>
                 </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-pink-50 to-rose-100 p-5 rounded-2xl">
-                  <div className="text-3xl mb-3">💰</div>
-                  <div className="text-xl font-bold text-pink-600 mb-1">{formatNumber(getMonthlyAmount())}원</div>
-                  <div className="text-sm text-gray-600">이번달 기부금액</div>
-                </div>
-                <div className="bg-gradient-to-br from-purple-50 to-indigo-100 p-5 rounded-2xl">
-                  <div className="text-3xl mb-3">🎯</div>
-                  <div className="text-xl font-bold text-purple-600 mb-1">{getMonthlyCount()}회</div>
-                  <div className="text-sm text-gray-600">이번달 기부횟수</div>
-                </div>
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-100 p-5 rounded-2xl">
-                  <div className="text-3xl mb-3">🏥</div>
-                  <div className="text-sm font-bold text-blue-600 mb-1">{getFavoriteOrganization()}</div>
-                  <div className="text-sm text-gray-600">가장 많이 기부한 곳</div>
-                </div>
-                <div className="bg-gradient-to-br from-green-50 to-emerald-100 p-5 rounded-2xl">
-                  <div className="text-3xl mb-3">📈</div>
-                  <div className="text-xl font-bold text-green-600 mb-1">{formatNumber(getAverageAmount())}원</div>
-                  <div className="text-sm text-gray-600">평균 기부금액</div>
-                </div>
-              </div>
-
-              {/* 월별 트렌드 차트 영역 */}
-              <div className="bg-white p-5 rounded-2xl shadow-sm">
-                <h4 className="font-semibold text-gray-800 mb-4">월별 기부 트렌드</h4>
-                <div className="h-32 bg-gradient-to-t from-pink-50 to-white rounded-xl flex items-end justify-center">
-                  <div className="text-gray-500 text-sm">차트 영역 (추후 구현)</div>
-                </div>
-              </div>
-
-              {/* 카테고리별 통계 */}
-              <div className="bg-white p-5 rounded-2xl shadow-sm">
-                <h4 className="font-semibold text-gray-800 mb-4">카테고리별 기부 현황</h4>
-                <div className="space-y-3">
-                  {['의료지원', '동물보호', '환경보호', '교육지원', '복지지원'].map((category, index) => {
-                    const categoryItems = donationHistory.filter(item => item.category === category);
-                    const categoryAmount = categoryItems.reduce((sum, item) => sum + item.amount, 0);
-                    const percentage = getTotalAmount() > 0 ? (categoryAmount / getTotalAmount() * 100) : 0;
-                    
-                    return (
-                      <div key={category} className="flex items-center gap-3">
-                        <div className="w-3 h-3 rounded-full" style={{
-                          backgroundColor: ['#ec4899', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b'][index]
-                        }}></div>
-                        <span className="text-sm text-gray-700 flex-1">{category}</span>
-                        <span className="text-sm font-medium text-gray-800">{percentage.toFixed(1)}%</span>
-                        <span className="text-sm text-gray-500">{formatNumber(categoryAmount)}원</span>
-                      </div>
-                    );
-                  })}
-                </div>
+                <ChevronRight size={20} className="text-gray-400" />
               </div>
             </div>
-          )}
-        </div>
-
-        {/* 설정 메뉴 */}
-        <div className="px-5 mt-8">
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-gray-100">
-              <h3 className="font-semibold text-gray-800">설정 및 도움말</h3>
-            </div>
-            
-            {[
-              { icon: '🔔', label: '알림 설정', desc: '기부 완료 및 이벤트 알림' },
-              { icon: '🔒', label: '개인정보 설정', desc: '계정 및 보안 관리' },
-              { icon: '📞', label: '고객센터', desc: '문의사항 및 도움말' },
-              { icon: '📋', label: '이용약관', desc: '서비스 이용약관 확인' }
-            ].map((item, index) => (
-              <button
-                key={index}
-                className="w-full p-4 flex items-center gap-4 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-b-0"
-              >
-                <div className="text-2xl">{item.icon}</div>
-                <div className="flex-1 text-left">
-                  <div className="font-medium text-gray-800">{item.label}</div>
-                  <div className="text-sm text-gray-500">{item.desc}</div>
+            <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
+                    <Bell size={20} className="text-gray-300" />
+                  </div>
+                  <span className="text-white font-medium">알림 설정</span>
                 </div>
-                <ChevronRight size={18} className="text-gray-400" />
-              </button>
-            ))}
-            
-            <button className="w-full p-4 flex items-center gap-4 hover:bg-red-50 transition-colors text-red-600">
-              <LogOut size={20} />
-              <span className="font-medium">로그아웃</span>
-            </button>
+                <ChevronRight size={20} className="text-gray-400" />
+              </div>
+            </div>
+            <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
+                    <LogOut size={20} className="text-gray-300" />
+                  </div>
+                  <span className="text-white font-medium">로그아웃</span>
+                </div>
+                <ChevronRight size={20} className="text-gray-400" />
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

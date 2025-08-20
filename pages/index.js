@@ -3,12 +3,12 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-800 mb-6">
+        <h1 className="text-4xl font-bold text-white mb-6">
           OZ Landing - 커뮤니티
         </h1>
-        <p className="text-gray-600 mb-8 text-lg">
+        <p className="text-gray-300 mb-8 text-lg">
           따뜻한 기부 이야기를 나누는 공간입니다
         </p>
         <div className="space-x-4">
@@ -18,7 +18,7 @@ export default function Home() {
             </button>
           </Link>
           <Link href="/mypage">
-            <button className="bg-white text-pink-500 border-2 border-pink-200 px-8 py-3 rounded-full font-medium hover:bg-pink-50 transition-colors">
+            <button className="bg-gray-800 text-pink-400 border-2 border-pink-500 px-8 py-3 rounded-full font-medium hover:bg-pink-500 hover:text-white transition-colors">
               마이페이지
             </button>
           </Link>

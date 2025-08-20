@@ -143,32 +143,32 @@ const CommunityPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       {/* 헤더 */}
-      <div className="bg-white px-5 py-4 shadow-sm sticky top-0 z-40">
+      <div className="bg-gray-800 px-5 py-4 shadow-sm sticky top-0 z-40 border-b border-gray-700">
         <div className="flex items-center gap-4">
           <button className="p-2">
-            <ArrowLeft size={20} className="text-gray-600" />
+            <ArrowLeft size={20} className="text-gray-300" />
           </button>
           <div className="flex-1">
-            <h1 className="text-lg font-bold text-gray-800">커뮤니티</h1>
-            <p className="text-sm text-gray-600">따뜻한 기부 이야기를 나누세요</p>
+            <h1 className="text-lg font-bold text-white">커뮤니티</h1>
+            <p className="text-sm text-gray-400">따뜻한 기부 이야기를 나누세요</p>
           </div>
           <button className="p-2">
-            <Filter size={20} className="text-gray-600" />
+            <Filter size={20} className="text-gray-300" />
           </button>
         </div>
       </div>
 
       <div className="pb-6">
         {/* 업로드 섹션 */}
-        <div className="bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 p-6 m-5 rounded-3xl shadow-sm">
+        <div className="bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 p-6 m-5 rounded-3xl shadow-lg border border-gray-600">
           <div className="text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-pink-200 to-purple-200 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Camera size={24} className="text-pink-600" />
+            <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Camera size={24} className="text-white" />
             </div>
-            <h2 className="text-xl font-bold text-gray-800 mb-2">내 기부 이야기 공유하기</h2>
-            <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+            <h2 className="text-xl font-bold text-white mb-2">내 기부 이야기 공유하기</h2>
+            <p className="text-gray-300 mb-6 text-sm leading-relaxed">
               사진, 영상, 자료를 통해 여러분의 따뜻한 기부 경험을<br />
               다른 분들과 나누어보세요
             </p>
@@ -198,7 +198,7 @@ const CommunityPage = () => {
                   className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                     filter === id 
                       ? 'bg-pink-500 text-white shadow-lg transform scale-105' 
-                      : 'bg-white text-gray-600 border border-gray-200 hover:border-pink-200'
+                      : 'bg-gray-800 text-gray-300 border border-gray-600 hover:border-pink-400 hover:text-white'
                   }`}
                 >
                   <span className="mr-1">{icon}</span>
@@ -209,13 +209,13 @@ const CommunityPage = () => {
           </div>
           
           <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-400">
               총 {filteredPosts.length}개의 게시물
             </span>
             <select 
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="text-sm bg-white border border-gray-200 rounded-lg px-3 py-1 focus:border-pink-300 focus:outline-none"
+              className="text-sm bg-gray-800 border border-gray-600 rounded-lg px-3 py-1 text-gray-300 focus:border-pink-400 focus:outline-none"
             >
               <option value="latest">최신순</option>
               <option value="popular">인기순</option>
@@ -226,12 +226,12 @@ const CommunityPage = () => {
         {/* 게시물 목록 */}
         <div className="px-5 space-y-6">
           {sortedPosts.map(post => (
-            <div key={post.id} className="bg-white rounded-3xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+            <div key={post.id} className="bg-gray-800 rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow border border-gray-700">
               {/* 미디어 영역 */}
-              <div className="h-52 bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 flex items-center justify-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              <div className="h-52 bg-gradient-to-br from-gray-700 via-gray-600 to-gray-700 flex items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 <span className="text-5xl relative z-10">{post.emoji}</span>
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                <div className="absolute top-4 right-4 bg-gray-800/90 backdrop-blur-sm text-gray-300 px-3 py-1 rounded-full text-xs font-medium border border-gray-600">
                   {post.type === 'photo' ? '📷 사진' : post.type === 'video' ? '🎥 영상' : '📄 자료'}
                 </div>
               </div>
@@ -239,39 +239,39 @@ const CommunityPage = () => {
               {/* 콘텐츠 */}
               <div className="p-5">
                 <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-pink-100 to-purple-100 rounded-full flex items-center justify-center text-lg flex-shrink-0">
+                  <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center text-lg flex-shrink-0">
                     {post.avatar}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-semibold text-gray-800">{post.author}</span>
-                      <span className="text-gray-400">•</span>
-                      <span className="text-sm text-gray-500">{post.time}</span>
+                      <span className="font-semibold text-white">{post.author}</span>
+                      <span className="text-gray-500">•</span>
+                      <span className="text-sm text-gray-400">{post.time}</span>
                     </div>
-                    <h3 className="font-bold text-gray-800 mb-2 text-lg leading-tight">{post.title}</h3>
+                    <h3 className="font-bold text-white mb-2 text-lg leading-tight">{post.title}</h3>
                   </div>
                 </div>
                 
-                <p className="text-gray-600 text-sm mb-4 leading-relaxed">{post.description}</p>
+                <p className="text-gray-300 text-sm mb-4 leading-relaxed">{post.description}</p>
                 
                 {/* 태그 */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {post.tags.map((tag, index) => (
-                    <span key={index} className="bg-gray-100 text-gray-600 px-2 py-1 rounded-lg text-xs">
+                    <span key={index} className="bg-gray-700 text-gray-300 px-2 py-1 rounded-lg text-xs border border-gray-600">
                       #{tag}
                     </span>
                   ))}
                 </div>
                 
                 {/* 상호작용 버튼 */}
-                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                <div className="flex items-center justify-between pt-3 border-t border-gray-700">
                   <div className="flex items-center gap-6">
                     <button 
                       onClick={() => toggleLike(post.id)}
                       className={`flex items-center gap-2 px-3 py-2 rounded-full transition-colors ${
                         post.isLiked 
-                          ? 'text-red-500 bg-red-50' 
-                          : 'text-gray-500 hover:bg-gray-50'
+                          ? 'text-red-400 bg-red-900/20 border border-red-800' 
+                          : 'text-gray-400 hover:bg-gray-700 hover:text-white border border-gray-600'
                       }`}
                     >
                       <Heart 
@@ -280,16 +280,16 @@ const CommunityPage = () => {
                       />
                       <span className="text-sm font-medium">{post.likes}</span>
                     </button>
-                    <button className="flex items-center gap-2 px-3 py-2 rounded-full text-gray-500 hover:bg-gray-50 transition-colors">
+                    <button className="flex items-center gap-2 px-3 py-2 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-colors border border-gray-600">
                       <MessageCircle size={18} />
                       <span className="text-sm font-medium">{post.comments}</span>
                     </button>
-                    <button className="flex items-center gap-2 px-3 py-2 rounded-full text-gray-500 hover:bg-gray-50 transition-colors">
+                    <button className="flex items-center gap-2 px-3 py-2 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-colors border border-gray-600">
                       <Share2 size={18} />
                       <span className="text-sm font-medium">공유</span>
                     </button>
                   </div>
-                  <button className="p-2 text-gray-400 hover:bg-gray-50 rounded-full transition-colors">
+                  <button className="p-2 text-gray-400 hover:bg-gray-700 hover:text-white rounded-full transition-colors">
                     <MoreHorizontal size={18} />
                   </button>
                 </div>
@@ -300,7 +300,7 @@ const CommunityPage = () => {
 
         {/* 더보기 버튼 */}
         <div className="text-center py-8">
-          <button className="bg-white text-pink-500 border-2 border-pink-200 px-8 py-3 rounded-full font-medium hover:bg-pink-50 transition-colors">
+          <button className="bg-gray-800 text-pink-400 border-2 border-pink-500 px-8 py-3 rounded-full font-medium hover:bg-pink-500 hover:text-white transition-colors">
             더 많은 이야기 보기
           </button>
         </div>
@@ -308,17 +308,17 @@ const CommunityPage = () => {
 
       {/* 업로드 모달 */}
       {showUploadModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end justify-center z-50">
-          <div className="bg-white rounded-t-3xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-end justify-center z-50">
+          <div className="bg-gray-800 rounded-t-3xl w-full max-h-[90vh] overflow-y-auto border-t border-gray-600">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-800">새 게시물 작성</h2>
+                <h2 className="text-xl font-bold text-white">새 게시물 작성</h2>
                 <button 
                   onClick={() => {
                     setShowUploadModal(false);
                     setUploadedFile(null);
                   }}
-                  className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                  className="w-8 h-8 bg-gray-700 text-gray-300 rounded-full flex items-center justify-center hover:bg-gray-600 transition-colors"
                 >
                   ×
                 </button>
@@ -327,10 +327,10 @@ const CommunityPage = () => {
               {/* 파일 업로드 영역 */}
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-pink-200 rounded-2xl p-8 text-center mb-6 cursor-pointer hover:bg-pink-50 transition-colors"
+                className="border-2 border-dashed border-pink-400 rounded-2xl p-8 text-center mb-6 cursor-pointer hover:bg-gray-700 transition-colors"
               >
                 <div className="text-4xl mb-4">📁</div>
-                <div className="text-gray-600 mb-2 font-medium">파일을 선택하거나 드래그해서 업로드하세요</div>
+                <div className="text-gray-300 mb-2 font-medium">파일을 선택하거나 드래그해서 업로드하세요</div>
                 <div className="text-gray-400 text-sm">JPG, PNG, MP4, PDF 파일 지원 (최대 50MB)</div>
                 <input
                   ref={fileInputRef}
@@ -343,22 +343,22 @@ const CommunityPage = () => {
               
               {/* 파일 미리보기 */}
               {uploadedFile && (
-                <div className="mb-6 p-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl">
+                <div className="mb-6 p-4 bg-gradient-to-r from-gray-700 to-gray-600 rounded-2xl border border-gray-600">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm">
-                      {uploadedFile.type.startsWith('image/') ? <Camera size={20} className="text-pink-500" /> :
-                       uploadedFile.type.startsWith('video/') ? <Video size={20} className="text-purple-500" /> : 
-                       <FileText size={20} className="text-blue-500" />}
+                    <div className="w-12 h-12 bg-gray-600 rounded-xl flex items-center justify-center shadow-sm">
+                      {uploadedFile.type.startsWith('image/') ? <Camera size={20} className="text-pink-400" /> :
+                       uploadedFile.type.startsWith('video/') ? <Video size={20} className="text-purple-400" /> : 
+                       <FileText size={20} className="text-blue-400" />}
                     </div>
                     <div className="flex-1">
-                      <div className="font-medium text-sm text-gray-800">{uploadedFile.name}</div>
-                      <div className="text-gray-500 text-xs">
+                      <div className="font-medium text-sm text-white">{uploadedFile.name}</div>
+                      <div className="text-gray-400 text-xs">
                         {(uploadedFile.size / (1024 * 1024)).toFixed(1)}MB
                       </div>
                     </div>
                     <button 
                       onClick={() => setUploadedFile(null)}
-                      className="w-8 h-8 bg-red-100 text-red-500 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
+                      className="w-8 h-8 bg-red-900/20 text-red-400 rounded-full flex items-center justify-center hover:bg-red-800/30 transition-colors border border-red-800"
                     >
                       ×
                     </button>
@@ -369,22 +369,22 @@ const CommunityPage = () => {
               {/* 입력 폼 */}
               <div className="space-y-6">
                 <div>
-                  <label className="block font-semibold text-gray-800 mb-3">제목</label>
+                  <label className="block font-semibold text-white mb-3">제목</label>
                   <input 
                     id="postTitle"
                     type="text" 
                     placeholder="게시물 제목을 입력하세요"
-                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-pink-300 focus:outline-none transition-colors"
+                    className="w-full p-4 border-2 border-gray-600 rounded-xl focus:border-pink-400 focus:outline-none transition-colors bg-gray-700 text-white placeholder-gray-400"
                   />
                 </div>
                 
                 <div>
-                  <label className="block font-semibold text-gray-800 mb-3">내용</label>
+                  <label className="block font-semibold text-white mb-3">내용</label>
                   <textarea 
                     id="postContent"
                     placeholder="기부 경험이나 소감을 자유롭게 작성해주세요"
                     rows="4"
-                    className="w-full p-4 border-2 border-gray-200 rounded-xl focus:border-pink-300 focus:outline-none resize-none transition-colors"
+                    className="w-full p-4 border-2 border-gray-600 rounded-xl focus:border-pink-400 focus:outline-none resize-none transition-colors bg-gray-700 text-white placeholder-gray-400"
                   />
                 </div>
                 
@@ -394,7 +394,7 @@ const CommunityPage = () => {
                       setShowUploadModal(false);
                       setUploadedFile(null);
                     }}
-                    className="flex-1 py-4 border-2 border-gray-200 rounded-xl text-gray-600 font-medium hover:bg-gray-50 transition-colors"
+                    className="flex-1 py-4 border-2 border-gray-600 rounded-xl text-gray-300 font-medium hover:bg-gray-700 transition-colors"
                   >
                     취소
                   </button>
