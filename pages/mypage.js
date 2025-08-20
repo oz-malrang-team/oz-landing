@@ -1,5 +1,5 @@
 import React from 'react';
-import MyPage from '../src/components/MyPage';
+import MyPage from '../components/MyPage';
 
 const MyPageRoute = () => {
   return <MyPage />;

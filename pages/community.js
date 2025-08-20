@@ -1,5 +1,5 @@
 import React from 'react';
-import CommunityPage from '../src/components/CommunityPage';
+import CommunityPage from '../components/CommunityPage';
 
 const Community = () => {
   return <CommunityPage />;
