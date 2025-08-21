@@ -341,11 +341,11 @@ const CommunityPage = () => {
               {/* 파일 업로드 영역 */}
               <div 
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-primary-400 rounded-2xl p-8 text-center mb-6 cursor-pointer hover:bg-slate-700 transition-colors"
+                className="border-2 border-dashed border-primary-400 rounded-2xl p-8 text-center mb-6 cursor-pointer hover:bg-pink-50 transition-colors"
               >
                 <div className="text-4xl mb-4">📁</div>
-                <div className="text-slate-300 mb-2 font-medium">파일을 선택하거나 드래그해서 업로드하세요</div>
-                <div className="text-slate-400 text-sm">JPG, PNG, MP4, PDF 파일 지원 (최대 50MB)</div>
+                <div className="text-pink-700 mb-2 font-medium">파일을 선택하거나 드래그해서 업로드하세요</div>
+                <div className="text-pink-600 text-sm">JPG, PNG, MP4, PDF 파일 지원 (최대 50MB)</div>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -357,22 +357,22 @@ const CommunityPage = () => {
               
               {/* 파일 미리보기 */}
               {uploadedFile && (
-                <div className="mb-6 p-4 bg-gradient-to-r from-slate-700 to-slate-600 rounded-2xl border border-slate-600">
+                <div className="mb-6 p-4 bg-gradient-to-r from-pink-50 to-pink-100 rounded-2xl border border-pink-200">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-slate-600 rounded-xl flex items-center justify-center shadow-sm">
-                      {uploadedFile.type.startsWith('image/') ? <Camera size={20} className="text-primary-400" /> :
-                       uploadedFile.type.startsWith('video/') ? <Video size={20} className="text-accent-400" /> : 
-                       <FileText size={20} className="text-blue-400" />}
+                    <div className="w-12 h-12 bg-pink-200 rounded-xl flex items-center justify-center shadow-sm">
+                      {uploadedFile.type.startsWith('image/') ? <Camera size={20} className="text-primary-500" /> :
+                       uploadedFile.type.startsWith('video/') ? <Video size={20} className="text-accent-500" /> : 
+                       <FileText size={20} className="text-blue-500" />}
                     </div>
                     <div className="flex-1">
-                      <div className="font-medium text-sm text-white">{uploadedFile.name}</div>
-                      <div className="text-slate-400 text-xs">
+                      <div className="font-medium text-sm text-pink-900">{uploadedFile.name}</div>
+                      <div className="text-pink-600 text-xs">
                         {(uploadedFile.size / (1024 * 1024)).toFixed(1)}MB
                       </div>
                     </div>
                     <button 
                       onClick={() => setUploadedFile(null)}
-                      className="w-8 h-8 bg-red-900/20 text-red-400 rounded-full flex items-center justify-center hover:bg-red-800/30 transition-colors border border-red-800"
+                      className="w-8 h-8 bg-red-100 text-red-500 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors border border-red-300"
                     >
                       ×
                     </button>
@@ -383,22 +383,22 @@ const CommunityPage = () => {
               {/* 입력 폼 */}
               <div className="space-y-6">
                 <div>
-                  <label className="block font-semibold text-white mb-3">제목</label>
+                  <label className="block font-semibold text-pink-900 mb-3">제목</label>
                   <input 
                     id="postTitle"
                     type="text" 
                     placeholder="게시물 제목을 입력하세요"
-                    className="w-full p-4 border-2 border-slate-600 rounded-xl focus:border-primary-400 focus:outline-none transition-colors bg-slate-700 text-white placeholder-slate-400"
+                    className="w-full p-4 border-2 border-pink-200 rounded-xl focus:border-primary-400 focus:outline-none transition-colors bg-white text-pink-900 placeholder-pink-400"
                   />
                 </div>
                 
                 <div>
-                  <label className="block font-semibold text-white mb-3">내용</label>
+                  <label className="block font-semibold text-pink-900 mb-3">내용</label>
                   <textarea 
                     id="postContent"
                     placeholder="기부 경험이나 소감을 자유롭게 작성해주세요"
                     rows="4"
-                    className="w-full p-4 border-2 border-slate-600 rounded-xl focus:border-primary-400 focus:outline-none resize-none transition-colors bg-slate-700 text-white placeholder-slate-400"
+                    className="w-full p-4 border-2 border-pink-200 rounded-xl focus:border-primary-400 focus:outline-none resize-none transition-colors bg-white text-pink-900 placeholder-pink-400"
                   />
                 </div>
                 
@@ -408,7 +408,7 @@ const CommunityPage = () => {
                       setShowUploadModal(false);
                       setUploadedFile(null);
                     }}
-                    className="flex-1 py-4 border-2 border-slate-600 rounded-xl text-slate-300 font-medium hover:bg-slate-700 transition-colors"
+                    className="flex-1 py-4 border-2 border-pink-200 rounded-xl text-pink-600 font-medium hover:bg-pink-50 transition-colors"
                   >
                     취소
                   </button>
