@@ -6,7 +6,7 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-pink-50 flex items-center justify-center">
       <div className="text-center">
         <h1 className="text-4xl font-bold text-pink-900 mb-6">
-          OZ Landing - 커뮤니티
+          Malrang
         </h1>
         <p className="text-pink-700 mb-8 text-lg">
           따뜻한 기부 이야기를 나누는 공간입니다

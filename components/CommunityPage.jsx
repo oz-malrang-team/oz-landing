@@ -162,7 +162,7 @@ const CommunityPage = () => {
             <ArrowLeft size={20} className="text-pink-600" />
           </button>
           <div className="flex-1">
-            <h1 className="text-lg font-bold text-pink-900">커뮤니티</h1>
+            <h1 className="text-lg font-bold text-pink-900">Malrang</h1>
             <p className="text-sm text-pink-600">따뜻한 기부 이야기를 나누세요</p>
           </div>
           <button 

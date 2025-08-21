@@ -142,7 +142,7 @@ const MyPage = () => {
             <ArrowLeft size={20} className="text-pink-600" />
           </button>
           <div className="flex-1">
-            <h1 className="text-lg font-bold text-pink-900">마이페이지</h1>
+            <h1 className="text-lg font-bold text-pink-900">Malrang</h1>
             <p className="text-sm text-pink-600">나의 기부 활동을 확인해보세요</p>
           </div>
           <button 
