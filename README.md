@@ -16,6 +16,20 @@
 - **Icons**: Lucide React
 - **Language**: JavaScript (JSX)
 
+## 디자인 시스템
+### 색상 테마
+- **Primary Colors**: 연핑크 계열 (`pink-500`, `pink-400`) - 주요 액션 및 강조 요소
+- **Accent Colors**: 퍼플 계열 (`purple-500`, `purple-400`) - 보조 액션 및 그라데이션
+- **Background**: 연핑크 화이트 (`pink-50`) - 밝고 따뜻한 배경
+- **Surface**: 화이트 (`white`) - 카드 및 컴포넌트 배경
+- **Text**: 핑크 계열 (`pink-900`, `pink-700`, `pink-600`) - 가독성 높은 텍스트
+- **Interactive**: 핑크 계열 (`pink-100`, `pink-200`) - 호버 및 테두리
+
+### 색상 변경 이력
+- **v1.0**: 핑크-퍼플 테마 (pink-500, purple-500)
+- **v2.0**: 블루-인디고 테마 (blue-500, indigo-500) - 다크 테마
+- **v3.0**: 연핑크-화이트 테마 (pink-500, purple-500) - 현재 버전
+
 ## 설치 및 실행
 
 ### 1. 의존성 설치
@@ -75,6 +89,10 @@ npm start
 ```
 
 ## 커스터마이징
+
+### 색상 테마 변경
+- `tailwind.config.js`에서 `primary` 및 `accent` 색상 수정
+- 컴포넌트에서 `primary-500`, `accent-500` 등의 클래스 사용
 
 ### 스타일 수정
 - `tailwind.config.js`에서 Tailwind CSS 설정 수정

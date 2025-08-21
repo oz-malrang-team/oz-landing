@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import { ArrowLeft, TrendingUp, Receipt, Calendar, Download, Settings, User, Bell, LogOut, ChevronRight, Edit, Share2 } from 'lucide-react';
+import { useRouter } from 'next/router';
 
 const MyPage = () => {
+  const router = useRouter();
   const [selectedTab, setSelectedTab] = useState('history');
   const [currentMonth, setCurrentMonth] = useState({ year: 2024, month: 8 });
+
+  // 뒤로가기 함수
+  const handleGoBack = () => {
+    router.push('/community');
+  };
 
   // 기부 내역 데이터
   const donationHistory = [
@@ -123,38 +130,45 @@ const MyPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-pink-50">
       {/* 헤더 */}
-      <div className="bg-gray-800 px-5 py-4 shadow-sm sticky top-0 z-40 border-b border-gray-700">
+      <div className="bg-white px-5 py-4 shadow-sm sticky top-0 z-40 border-b border-pink-200">
         <div className="flex items-center gap-4">
-          <button className="p-2">
-            <ArrowLeft size={20} className="text-gray-300" />
+          <button 
+            onClick={handleGoBack}
+            className="p-2 hover:bg-pink-100 rounded-full transition-colors"
+            title="커뮤니티로 이동"
+          >
+            <ArrowLeft size={20} className="text-pink-600" />
           </button>
           <div className="flex-1">
-            <h1 className="text-lg font-bold text-white">마이페이지</h1>
-            <p className="text-sm text-gray-400">나의 기부 활동을 확인해보세요</p>
+            <h1 className="text-lg font-bold text-pink-900">마이페이지</h1>
+            <p className="text-sm text-pink-600">나의 기부 활동을 확인해보세요</p>
           </div>
-          <button className="p-2">
-            <Settings size={20} className="text-gray-300" />
+          <button 
+            className="p-2 hover:bg-pink-100 rounded-full transition-colors"
+            title="설정"
+          >
+            <Settings size={20} className="text-pink-600" />
           </button>
         </div>
       </div>
 
       <div className="pb-6">
         {/* 프로필 섹션 */}
-        <div className="bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800 p-6 m-5 rounded-3xl shadow-lg border border-gray-600">
+        <div className="bg-gradient-to-br from-white via-pink-50 to-white p-6 m-5 rounded-3xl shadow-lg border border-pink-200">
           <div className="text-center">
-            <div className="w-20 h-20 bg-gradient-to-br from-pink-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+            <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
               😊
             </div>
-            <h2 className="text-xl font-bold text-white mb-2">마음씨님</h2>
-            <p className="text-gray-300 mb-4 text-sm">따뜻한 마음으로 기부하는 분</p>
+            <h2 className="text-xl font-bold text-pink-900 mb-2">마음씨님</h2>
+            <p className="text-pink-700 mb-4 text-sm">따뜻한 마음으로 기부하는 분</p>
             <div className="flex justify-center gap-4">
-              <button className="bg-gray-700 text-gray-300 px-4 py-2 rounded-full text-sm hover:bg-gray-600 transition-colors border border-gray-600">
+              <button className="bg-pink-100 text-pink-700 px-4 py-2 rounded-full text-sm hover:bg-pink-200 transition-colors border border-pink-200">
                 <Edit size={16} className="inline mr-2" />
                 프로필 수정
               </button>
-              <button className="bg-gray-700 text-gray-300 px-4 py-2 rounded-full text-sm hover:bg-gray-600 transition-colors border border-gray-600">
+              <button className="bg-pink-100 text-pink-700 px-4 py-2 rounded-full text-sm hover:bg-pink-200 transition-colors border border-pink-200">
                 <Share2 size={16} className="inline mr-2" />
                 공유하기
               </button>
@@ -165,25 +179,25 @@ const MyPage = () => {
         {/* 통계 카드 */}
         <div className="px-5 mb-6">
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gray-800 p-4 rounded-2xl border border-gray-700">
+            <div className="bg-white p-4 rounded-2xl border border-pink-200">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-500 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center">
                   <TrendingUp size={24} className="text-white" />
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm">이번 달 기부</p>
-                  <p className="text-white font-bold text-lg">{formatNumber(getMonthlyAmount())}원</p>
+                  <p className="text-pink-600 text-sm">이번 달 기부</p>
+                  <p className="text-pink-900 font-bold text-lg">{formatNumber(getMonthlyAmount())}원</p>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-800 p-4 rounded-2xl border border-gray-700">
+            <div className="bg-white p-4 rounded-2xl border border-pink-200">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
                   <Calendar size={24} className="text-white" />
                 </div>
                 <div>
-                  <p className="text-gray-400 text-sm">이번 달 횟수</p>
-                  <p className="text-white font-bold text-lg">{getMonthlyCount()}회</p>
+                  <p className="text-pink-600 text-sm">이번 달 횟수</p>
+                  <p className="text-pink-900 font-bold text-lg">{getMonthlyCount()}회</p>
                 </div>
               </div>
             </div>
@@ -192,7 +206,7 @@ const MyPage = () => {
 
         {/* 탭 네비게이션 */}
         <div className="px-5 mb-6">
-          <div className="flex gap-2 bg-gray-800 p-1 rounded-2xl border border-gray-600">
+          <div className="flex gap-2 bg-white p-1 rounded-2xl border border-pink-200 shadow-sm">
             {[
               { id: 'history', label: '기부 내역', icon: Receipt },
               { id: 'stats', label: '통계', icon: TrendingUp },
@@ -203,8 +217,8 @@ const MyPage = () => {
                 onClick={() => setSelectedTab(id)}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-200 ${
                   selectedTab === id
-                    ? 'bg-pink-500 text-white shadow-lg'
-                    : 'text-gray-400 hover:text-gray-300'
+                    ? 'bg-primary-500 text-white shadow-lg'
+                    : 'text-pink-600 hover:text-pink-700 hover:bg-pink-50'
                 }`}
               >
                 <Icon size={16} />
@@ -218,33 +232,33 @@ const MyPage = () => {
         {selectedTab === 'history' && (
           <div className="px-5 space-y-4">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-bold text-white">기부 내역</h3>
-              <button className="text-pink-400 text-sm hover:text-pink-300 transition-colors">
+              <h3 className="text-lg font-bold text-pink-900">기부 내역</h3>
+              <button className="text-primary-500 text-sm hover:text-primary-600 transition-colors">
                 전체보기
               </button>
             </div>
             {donationHistory.map(item => (
-              <div key={item.id} className="bg-gray-800 rounded-2xl p-4 border border-gray-700 hover:border-gray-600 transition-colors">
+              <div key={item.id} className="bg-white rounded-2xl p-4 border border-pink-200 hover:border-pink-300 transition-colors shadow-sm">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-600 rounded-xl flex items-center justify-center text-2xl">
+                  <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-xl flex items-center justify-center text-2xl">
                     {item.emoji}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-white">{item.organization}</h4>
-                      <span className="text-pink-400 font-bold">{formatNumber(item.amount)}원</span>
+                      <h4 className="font-semibold text-pink-900">{item.organization}</h4>
+                      <span className="text-primary-500 font-bold">{formatNumber(item.amount)}원</span>
                     </div>
-                    <div className="flex items-center gap-3 text-sm text-gray-400">
+                    <div className="flex items-center gap-3 text-sm text-pink-600">
                       <span>{formatDate(item.date)}</span>
                       <span>•</span>
                       <span>{item.category}</span>
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <button className="p-2 text-gray-400 hover:text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+                    <button className="p-2 text-pink-500 hover:text-primary-600 hover:bg-pink-100 rounded-lg transition-colors">
                       <Download size={16} />
                     </button>
-                    <button className="p-2 text-gray-400 hover:text-gray-300 hover:bg-gray-700 rounded-lg transition-colors">
+                    <button className="p-2 text-pink-500 hover:text-primary-600 hover:bg-pink-100 rounded-lg transition-colors">
                       <ChevronRight size={16} />
                     </button>
                   </div>
@@ -257,20 +271,20 @@ const MyPage = () => {
         {/* 통계 */}
         {selectedTab === 'stats' && (
           <div className="px-5 space-y-6">
-            <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700">
-              <h3 className="text-lg font-bold text-white mb-4">기부 통계</h3>
+            <div className="bg-white rounded-2xl p-6 border border-pink-200 shadow-sm">
+              <h3 className="text-lg font-bold text-pink-900 mb-4">기부 통계</h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-400">총 기부 금액</span>
-                  <span className="text-white font-bold text-lg">{formatNumber(getTotalAmount())}원</span>
+                  <span className="text-pink-600">총 기부 금액</span>
+                  <span className="text-pink-900 font-bold text-lg">{formatNumber(getTotalAmount())}원</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-400">총 기부 횟수</span>
-                  <span className="text-white font-bold text-lg">{donationHistory.length}회</span>
+                  <span className="text-pink-600">총 기부 횟수</span>
+                  <span className="text-pink-900 font-bold text-lg">{donationHistory.length}회</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-400">자주 기부하는 곳</span>
-                  <span className="text-white font-bold">{getFavoriteOrganization()}</span>
+                  <span className="text-pink-600">자주 기부하는 곳</span>
+                  <span className="text-pink-900 font-bold">{getFavoriteOrganization()}</span>
                 </div>
               </div>
             </div>
@@ -280,37 +294,37 @@ const MyPage = () => {
         {/* 설정 */}
         {selectedTab === 'settings' && (
           <div className="px-5 space-y-4">
-            <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+            <div className="bg-white rounded-2xl p-4 border border-pink-200 shadow-sm hover:border-pink-300 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
-                    <User size={20} className="text-gray-300" />
+                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
+                    <User size={20} className="text-pink-600" />
                   </div>
-                  <span className="text-white font-medium">계정 정보</span>
+                  <span className="text-pink-900 font-medium">계정 정보</span>
                 </div>
-                <ChevronRight size={20} className="text-gray-400" />
+                <ChevronRight size={20} className="text-pink-400" />
               </div>
             </div>
-            <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+            <div className="bg-white rounded-2xl p-4 border border-pink-200 shadow-sm hover:border-pink-300 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
-                    <Bell size={20} className="text-gray-300" />
+                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
+                    <Bell size={20} className="text-pink-600" />
                   </div>
-                  <span className="text-white font-medium">알림 설정</span>
+                  <span className="text-pink-900 font-medium">알림 설정</span>
                 </div>
-                <ChevronRight size={20} className="text-gray-400" />
+                <ChevronRight size={20} className="text-pink-400" />
               </div>
             </div>
-            <div className="bg-gray-800 rounded-2xl p-4 border border-gray-700">
+            <div className="bg-white rounded-2xl p-4 border border-pink-200 shadow-sm hover:border-pink-300 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
-                    <LogOut size={20} className="text-gray-300" />
+                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
+                    <LogOut size={20} className="text-pink-600" />
                   </div>
-                  <span className="text-white font-medium">로그아웃</span>
+                  <span className="text-pink-900 font-medium">로그아웃</span>
                 </div>
-                <ChevronRight size={20} className="text-gray-400" />
+                <ChevronRight size={20} className="text-pink-400" />
               </div>
             </div>
           </div>
