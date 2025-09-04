@@ -607,8 +607,8 @@ const MyPage = () => {
               
               <div className="text-center py-4">
                 <p className="text-xs text-rose-500">
-                  시행일: 2024년 1월 1일<br/>
-                  최종 수정일: 2024년 1월 1일
+                  시행일: 2025년 9월 4일<br/>
+                  최종 수정일: 2025년 9월 4일
                 </p>
               </div>
             </div>
@@ -680,8 +680,8 @@ const MyPage = () => {
               
               <div className="text-center py-4">
                 <p className="text-xs text-rose-500">
-                  시행일: 2024년 1월 1일<br/>
-                  최종 수정일: 2024년 1월 1일
+                  시행일: 2025년 9월 4일<br/>
+                  최종 수정일: 2025년 9월 4일
                 </p>
               </div>
             </div>
