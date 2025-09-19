@@ -1,0 +1,8 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+  <path d="M40 60 Q30 45 45 40 Q50 25 65 30 Q75 20 85 30 Q95 25 105 35 Q115 30 125 40 Q135 35 145 45 Q150 50 145 60 Q150 70 140 75 Q135 85 125 80 Q115 85 105 80 Q95 85 85 80 Q75 85 65 80 Q55 85 45 80 Q35 75 40 60 Z" fill="white" stroke="#FF6B6B" stroke-width="3"/>
+  <circle cx="60" cy="55" r="4" fill="#FF6B6B"/>
+  <circle cx="80" cy="55" r="4" fill="#FF6B6B"/>
+  <path d="M65 70 Q75 75 85 70" stroke="#FF6B6B" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <text x="120" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#FF6B6B">말랑</text>
+  <text x="120" y="70" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#333">이</text>
+</svg>

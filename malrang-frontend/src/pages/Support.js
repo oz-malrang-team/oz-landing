@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import Header from '../components/common/Header';
+import MobileHeader from '../components/common/MobileHeader';
 import AlertMessage from '../components/common/AlertMessage';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import { 
@@ -19,648 +19,651 @@ import {
   Send,
   ArrowLeft
 } from 'lucide-react';
-import api from '../services/api';
+import { api } from '../services/api';
 
 const Support = () => {
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const { isAuthenticated, loading } = useAuth();
-
+  const [tickets, setTickets] = useState([]);
+  const [filteredTickets, setFilteredTickets] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  // 탭 상태
-  const [activeTab, setActiveTab] = useState('my-questions'); // 'my-questions', 'faq', 'new-question'
-
-  // 내 질문 목록
-  const [myQuestions, setMyQuestions] = useState([]);
-  const [questionFilter, setQuestionFilter] = useState('all'); // 'all', 'pending', 'answered'
-
-  // FAQ 목록
-  const [faqs, setFaqs] = useState([]);
-  const [faqCategory, setFaqCategory] = useState('all');
-
-  // 새 질문 작성
-  const [newQuestion, setNewQuestion] = useState({
+  const [showNewTicket, setShowNewTicket] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('all');
+  const [sortBy, setSortBy] = useState('latest');
+  const [activeTab, setActiveTab] = useState('faq'); // FAQ 탭을 기본으로 설정
+  
+  // 새 티켓 작성 상태
+  const [newTicket, setNewTicket] = useState({
     subject: '',
-    content: '',
-    category: 'general',
-    priority: 'medium'
+    message: '',
+    priority: 'medium',
+    category: 'general'
   });
 
-  // 선택된 질문 상세
-  const [selectedQuestion, setSelectedQuestion] = useState(null);
-  const [showQuestionDetail, setShowQuestionDetail] = useState(false);
+  // 티켓 상세보기 상태
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [showTicketDetail, setShowTicketDetail] = useState(false);
+  const [replyMessage, setReplyMessage] = useState('');
 
-  const categories = [
-    { value: 'general', label: '일반 문의' },
-    { value: 'donation', label: '기부 관련' },
-    { value: 'payment', label: '결제 문의' },
-    { value: 'account', label: '계정 문의' },
-    { value: 'technical', label: '기술 지원' },
-    { value: 'other', label: '기타' }
-  ];
-
-  const priorities = [
-    { value: 'low', label: '낮음' },
-    { value: 'medium', label: '보통' },
-    { value: 'high', label: '높음' },
-    { value: 'urgent', label: '긴급' }
-  ];
-
-  // 인증 검사
-  useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      navigate('/login');
+  // FAQ 데이터
+  const [faqs, setFaqs] = useState([
+    {
+      _id: '1',
+      subject: '기부금 영수증은 어떻게 발급받을 수 있나요?',
+      content: '기부금 영수증 발급 방법이 궁금합니다.',
+      category: 'donation',
+      adminResponse: {
+        content: '기부금 영수증은 마이페이지의 기부 내역에서 직접 발급받으실 수 있습니다. 연말정산 시 필요한 기부금 영수증은 국세청 연말정산 간소화 서비스에 자동 등록되므로, 별도로 제출하지 않으셔도 됩니다.',
+        respondedBy: '고객지원팀',
+        respondedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      },
+      createdAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+      viewCount: 256
+    },
+    {
+      _id: '2',
+      subject: '정기후원 금액을 변경하거나 중단하고 싶어요.',
+      content: '정기후원 관리 방법이 궁금합니다.',
+      category: 'donation',
+      adminResponse: {
+        content: '정기후원 금액 변경 및 중단은 마이페이지의 정기후원 관리 메뉴에서 직접 신청하실 수 있습니다. 후원금 변경은 다음 결제일로부터, 중단은 신청 즉시 반영됩니다. 자세한 내용은 고객센터로 문의해 주시면 친절하게 안내해 드리겠습니다.',
+        respondedBy: '고객지원팀',
+        respondedAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000)
+      },
+      createdAt: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000),
+      viewCount: 189
+    },
+    {
+      _id: '3',
+      subject: '나눔가게에서 물품을 판매하고 싶어요.',
+      content: '나눔가게 물품 등록 방법이 궁금합니다.',
+      category: 'general',
+      adminResponse: {
+        content: '나눔가게는 개인 간의 물품 나눔과 거래를 지원하는 커뮤니티 공간입니다. 상품을 등록하려면 커뮤니티 페이지에서 글쓰기 버튼을 누른 후, 글쓰기 유형을 나눔가게로 선택해 주세요. 판매 수익금의 일부 또는 전부를 기부할 수 있는 옵션도 제공하고 있습니다.',
+        respondedBy: '고객지원팀',
+        respondedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)
+      },
+      createdAt: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
+      viewCount: 142
+    },
+    {
+      _id: '4',
+      subject: '후원한 기부금이 어떻게 사용되는지 궁금해요.',
+      content: '기부금 사용 내역을 투명하게 확인하고 싶습니다.',
+      category: 'donation',
+      adminResponse: {
+        content: 'Malrang은 투명한 기부금 운영을 최우선으로 생각합니다. 후원하신 기부금의 사용 내역은 각 캠페인의 임팩트 리포트에서 자세히 확인하실 수 있습니다. 또한, 정기후원자분들께는 매월 뉴스레터를 통해 기부금의 사용 현황과 변화를 정기적으로 공유해 드립니다.',
+        respondedBy: '고객지원팀',
+        respondedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+      },
+      createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
+      viewCount: 298
     }
-  }, [isAuthenticated, loading, navigate]);
+  ]);
 
-  // 내 질문 목록 로드
-  const loadMyQuestions = async () => {
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchTickets();
+    } else {
+      setIsLoading(false);
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    filterAndSortTickets();
+  }, [tickets, searchTerm, filterStatus, sortBy]);
+
+  const fetchTickets = async () => {
     try {
       setIsLoading(true);
-      const params = {};
-      if (questionFilter !== 'all') {
-        params.status = questionFilter;
-      }
-
-      const response = await api.get('/support/my-questions', { params });
-      if (response.data.success) {
-        setMyQuestions(response.data.data.questions);
-      }
-    } catch (err) {
-      console.error('질문 목록 로드 오류:', err);
-      setError('질문 목록을 불러오는데 실패했습니다.');
+      const response = await api.get('/support/tickets');
+      setTickets(response.data.tickets || []);
+    } catch (error) {
+      console.error('티켓 조회 오류:', error);
+      setError('티켓을 불러오는 중 오류가 발생했습니다.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  // FAQ 목록 로드
-  const loadFaqs = async () => {
-    try {
-      setIsLoading(true);
-      const params = {};
-      if (faqCategory !== 'all') {
-        params.category = faqCategory;
-      }
+  const filterAndSortTickets = () => {
+    let filtered = [...tickets];
 
-      const response = await api.get('/support/faq', { params });
-      if (response.data.success) {
-        setFaqs(response.data.data.faqs);
-      }
-    } catch (err) {
-      console.error('FAQ 로드 오류:', err);
-      setError('FAQ를 불러오는데 실패했습니다.');
-    } finally {
-      setIsLoading(false);
+    // 검색어 필터링
+    if (searchTerm) {
+      filtered = filtered.filter(ticket => 
+        ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        ticket.message.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
+
+    // 상태 필터링
+    if (filterStatus !== 'all') {
+      filtered = filtered.filter(ticket => ticket.status === filterStatus);
+    }
+
+    // 정렬
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'latest':
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        case 'oldest':
+          return new Date(a.createdAt) - new Date(b.createdAt);
+        case 'priority':
+          const priorityOrder = { high: 3, medium: 2, low: 1 };
+          return priorityOrder[b.priority] - priorityOrder[a.priority];
+        default:
+          return 0;
+      }
+    });
+
+    setFilteredTickets(filtered);
   };
 
-  // 페이지 로드 시 FAQ 미리 로드
-  useEffect(() => {
-    if (!isAuthenticated || loading) return;
-    
-    // FAQ는 페이지 로드 시 미리 로드
-    loadFaqs();
-  }, [isAuthenticated, loading]);
-
-  // 탭 변경 시 데이터 로드
-  useEffect(() => {
-    if (!isAuthenticated || loading) return;
-
-    if (activeTab === 'my-questions') {
-      loadMyQuestions();
-    } else if (activeTab === 'faq') {
-      loadFaqs();
-    }
-  }, [activeTab, questionFilter, faqCategory, isAuthenticated, loading]);
-
-  // 새 질문 제출
-  const handleSubmitQuestion = async (e) => {
+  const handleCreateTicket = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
-
-    if (!newQuestion.subject.trim() || !newQuestion.content.trim()) {
+    if (!newTicket.subject.trim() || !newTicket.message.trim()) {
       setError('제목과 내용을 모두 입력해주세요.');
       return;
     }
 
     try {
-      setIsLoading(true);
-      const response = await api.post('/support/questions', newQuestion);
-      
-      if (response.data.success) {
-        setSuccess('질문이 성공적으로 등록되었습니다.');
-        setNewQuestion({ subject: '', content: '', category: 'general', priority: 'medium' });
-        setActiveTab('my-questions');
-        loadMyQuestions();
-      }
-    } catch (err) {
-      console.error('질문 등록 오류:', err);
-      setError(err.response?.data?.message || '질문 등록에 실패했습니다.');
-    } finally {
-      setIsLoading(false);
+      const response = await api.post('/support/tickets', newTicket);
+      setTickets(prev => [response.data.ticket, ...prev]);
+      setNewTicket({ subject: '', message: '', priority: 'medium', category: 'general' });
+      setShowNewTicket(false);
+      setSuccess('문의가 성공적으로 등록되었습니다.');
+    } catch (error) {
+      console.error('티켓 생성 오류:', error);
+      setError('문의 등록 중 오류가 발생했습니다.');
     }
   };
 
-  // 질문 상세 보기
-  const handleViewQuestion = async (questionId) => {
+  const handleReplyToTicket = async (ticketId) => {
+    if (!replyMessage.trim()) {
+      setError('답변 내용을 입력해주세요.');
+      return;
+    }
+
     try {
-      const response = await api.get(`/support/questions/${questionId}`);
-      if (response.data.success) {
-        setSelectedQuestion(response.data.data.question);
-        setShowQuestionDetail(true);
+      await api.post(`/support/tickets/${ticketId}/reply`, {
+        message: replyMessage
+      });
+      
+      // 티켓 목록 새로고침
+      await fetchTickets();
+      
+      // 선택된 티켓 정보 업데이트
+      const updatedTicket = tickets.find(t => t._id === ticketId);
+      if (updatedTicket) {
+        setSelectedTicket(updatedTicket);
       }
-    } catch (err) {
-      console.error('질문 상세 조회 오류:', err);
-      setError('질문을 불러오는데 실패했습니다.');
+      
+      setReplyMessage('');
+      setSuccess('답변이 성공적으로 등록되었습니다.');
+    } catch (error) {
+      console.error('답변 등록 오류:', error);
+      setError('답변 등록 중 오류가 발생했습니다.');
     }
   };
 
-  // 상태별 아이콘
+  const handleDeleteTicket = async (ticketId) => {
+    if (!window.confirm('정말로 이 문의를 삭제하시겠습니까?')) {
+      return;
+    }
+
+    try {
+      await api.delete(`/support/tickets/${ticketId}`);
+      setTickets(prev => prev.filter(t => t._id !== ticketId));
+      setSuccess('문의가 성공적으로 삭제되었습니다.');
+      
+      if (selectedTicket && selectedTicket._id === ticketId) {
+        setShowTicketDetail(false);
+        setSelectedTicket(null);
+      }
+    } catch (error) {
+      console.error('티켓 삭제 오류:', error);
+      setError('문의 삭제 중 오류가 발생했습니다.');
+    }
+  };
+
   const getStatusIcon = (status) => {
     switch (status) {
       case 'pending':
-        return <Clock size={16} className="text-yellow-500" />;
+        return <Clock className="w-4 h-4 text-rose-500" />;
       case 'answered':
-        return <CheckCircle2 size={16} className="text-green-500" />;
+        return <CheckCircle2 className="w-4 h-4 text-green-500" />;
+      case 'closed':
+        return <AlertCircle className="w-4 h-4 text-gray-500" />;
       default:
-        return <AlertCircle size={16} className="text-gray-500" />;
+        return <Clock className="w-4 h-4 text-rose-500" />;
     }
   };
 
-  // 상태별 텍스트
   const getStatusText = (status) => {
     switch (status) {
-      case 'pending':
-        return '답변 대기';
-      case 'answered':
-        return '답변 완료';
+      case 'open':
+        return '대기중';
+      case 'in_progress':
+        return '처리중';
+      case 'resolved':
+        return '해결됨';
       default:
         return '알 수 없음';
     }
   };
 
-  // 우선순위별 색상
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case 'urgent':
-        return 'text-red-600 bg-red-100';
       case 'high':
-        return 'text-orange-600 bg-orange-100';
+        return 'text-red-600 bg-red-50';
       case 'medium':
-        return 'text-blue-600 bg-blue-100';
+        return 'text-yellow-600 bg-yellow-50';
       case 'low':
-        return 'text-gray-600 bg-gray-100';
+        return 'text-green-600 bg-green-50';
       default:
-        return 'text-gray-600 bg-gray-100';
+        return 'text-gray-600 bg-gray-50';
     }
   };
 
-  if (loading) {
+  const getCategoryText = (category) => {
+    switch (category) {
+      case 'general':
+        return '일반 문의';
+      case 'technical':
+        return '기술 문의';
+      case 'billing':
+        return '결제 문의';
+      case 'bug':
+        return '버그 신고';
+      default:
+        return '기타';
+    }
+  };
+
+  if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50 flex items-center justify-center">
-        <LoadingSpinner />
+      <div className="min-h-screen bg-gray-50">
+        <MobileHeader title="고객지원" />
+        <div className="p-4">
+          <div className="bg-white rounded-lg shadow-sm p-6 text-center">
+            <MessageSquare className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-gray-700 mb-2">로그인이 필요합니다</h2>
+            <p className="text-gray-500 mb-4">고객지원 서비스를 이용하려면 로그인해주세요.</p>
+            <button
+              onClick={() => navigate('/login')}
+              className="bg-rose-500 text-white px-6 py-2 rounded-lg hover:bg-rose-600 transition-colors"
+            >
+              로그인하기
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <MobileHeader title="고객지원" />
+        <div className="p-4">
+          <LoadingSpinner />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 to-pink-50">
-      <AlertMessage 
-        error={error} 
-        success={success} 
-        onClose={() => {
-          setError('');
-          setSuccess('');
-        }} 
-      />
+    <div className="min-h-screen bg-gray-50">
+      <MobileHeader title="고객지원" />
+      
+      {error && <AlertMessage type="error" message={error} onClose={() => setError('')} />}
+      {success && <AlertMessage type="success" message={success} onClose={() => setSuccess('')} />}
 
-      <Header 
-        title="고객센터" 
-        onBack={() => navigate('/mypage')}
-        showSettings={false}
-      />
-
-      <main className="max-w-4xl mx-auto px-6 py-8">
-        {/* 브레드크럼 네비게이션 */}
-        <div className="mb-4">
-          <nav className="flex items-center space-x-2 text-sm text-rose-600">
-            <button 
-              onClick={() => navigate('/mypage')}
-              className="hover:text-rose-700 hover:underline"
-            >
-              마이페이지
-            </button>
-            <ChevronRight size={14} className="text-rose-400" />
-            <span className="text-rose-900 font-medium">고객센터</span>
-          </nav>
-        </div>
-
-        {/* 페이지 제목 */}
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-rose-900 mb-2">고객센터</h2>
-          <p className="text-rose-600">궁금한 점이나 문의사항을 언제든지 남겨주세요</p>
-        </div>
-
+      <div className="p-4">
         {/* 탭 네비게이션 */}
-        <div className="bg-white rounded-xl shadow-sm mb-6">
-          <div className="flex border-b border-rose-100">
-            <button
-              onClick={() => setActiveTab('my-questions')}
-              className={`flex-1 py-4 px-6 text-center font-medium transition-colors ${
-                activeTab === 'my-questions'
-                  ? 'text-rose-600 border-b-2 border-rose-600'
-                  : 'text-rose-400 hover:text-rose-600'
-              }`}
-            >
-              내 문의
-            </button>
+        <div className="bg-white rounded-lg shadow-sm p-1 mb-4">
+          <div className="flex">
             <button
               onClick={() => setActiveTab('faq')}
-              className={`flex-1 py-4 px-6 text-center font-medium transition-colors ${
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'faq'
-                  ? 'text-rose-600 border-b-2 border-rose-600'
-                  : 'text-rose-400 hover:text-rose-600'
+                  ? 'bg-rose-500 text-white'
+                  : 'text-gray-600 hover:text-rose-600'
               }`}
             >
-              자주 묻는 질문
+              자주묻는 질문
             </button>
             <button
-              onClick={() => setActiveTab('new-question')}
-              className={`flex-1 py-4 px-6 text-center font-medium transition-colors ${
-                activeTab === 'new-question'
-                  ? 'text-rose-600 border-b-2 border-rose-600'
-                  : 'text-rose-400 hover:text-rose-600'
+              onClick={() => setActiveTab('tickets')}
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+                activeTab === 'tickets'
+                  ? 'bg-rose-500 text-white'
+                  : 'text-gray-600 hover:text-rose-600'
               }`}
             >
-              문의하기
+              나의 문의
             </button>
           </div>
         </div>
 
-        {/* 내 문의 탭 */}
-        {activeTab === 'my-questions' && (
-          <div className="space-y-6">
-            {/* 필터 */}
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <div className="flex items-center gap-4">
-                <select
-                  value={questionFilter}
-                  onChange={(e) => setQuestionFilter(e.target.value)}
-                  className="px-4 py-2 border border-rose-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
-                >
-                  <option value="all">전체</option>
-                  <option value="pending">답변 대기</option>
-                  <option value="answered">답변 완료</option>
-                </select>
+        {/* FAQ 섹션 */}
+        {activeTab === 'faq' && (
+          <div className="space-y-3">
+            <div className="bg-white rounded-lg shadow-sm p-4">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">자주 묻는 질문</h2>
+              <p className="text-sm text-gray-600 mb-4">
+                말랑 서비스 이용 중 궁금한 점들을 확인해보세요.
+              </p>
+            </div>
+            
+            {faqs.map((faq) => (
+              <div key={faq._id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+                <div className="p-4 border-b border-gray-100">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="font-medium text-gray-900 mb-2">{faq.subject}</h3>
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <span className="px-2 py-1 bg-rose-100 text-rose-600 rounded-full">
+                          {faq.category === 'donation' ? '기부' : '일반'}
+                        </span>
+                        <span>조회 {faq.viewCount}회</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {faq.adminResponse && (
+                  <div className="p-4 bg-rose-50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-xs font-medium text-rose-800">답변</span>
+                      <span className="text-xs text-rose-600">
+                        {faq.adminResponse.respondedBy} • {new Date(faq.adminResponse.respondedAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p className="text-sm text-rose-700 leading-relaxed whitespace-pre-wrap">
+                      {faq.adminResponse.content}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 나의 문의 섹션 */}
+        {activeTab === 'tickets' && (
+          <>
+            {/* 헤더 섹션 */}
+            <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+              <div className="flex items-center justify-between mb-4">
+                <h1 className="text-xl font-semibold text-gray-800">나의 문의</h1>
                 <button
-                  onClick={() => setActiveTab('new-question')}
-                  className="ml-auto bg-rose-600 text-white px-4 py-2 rounded-lg hover:bg-rose-700 transition-colors flex items-center gap-2"
+                  onClick={() => setShowNewTicket(true)}
+                  className="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-600 transition-colors flex items-center gap-2"
                 >
-                  <Plus size={16} />
+                  <Plus className="w-4 h-4" />
                   새 문의
                 </button>
               </div>
+
+              {/* 검색 및 필터 */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input
+                      type="text"
+                      placeholder="문의 제목이나 내용으로 검색..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+                
+                <select
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                >
+                  <option value="all">모든 상태</option>
+                  <option value="pending">대기중</option>
+                  <option value="answered">답변완료</option>
+                  <option value="closed">해결됨</option>
+                </select>
+
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                >
+                  <option value="latest">최신순</option>
+                  <option value="oldest">오래된순</option>
+                  <option value="priority">우선순위순</option>
+                </select>
+              </div>
             </div>
 
-            {/* 질문 목록 */}
-            <div className="space-y-4">
-              {isLoading ? (
-                <div className="text-center py-8">
-                  <LoadingSpinner />
-                </div>
-              ) : myQuestions.length === 0 ? (
-                <div className="bg-white rounded-xl shadow-sm p-8 text-center">
-                  <MessageSquare size={48} className="mx-auto text-rose-300 mb-4" />
-                  <p className="text-rose-600">아직 문의하신 내용이 없습니다.</p>
+            {/* 티켓 목록 */}
+            <div className="space-y-3">
+              {filteredTickets.length === 0 ? (
+                <div className="bg-white rounded-lg shadow-sm p-6 text-center">
+                  <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                  <h3 className="text-lg font-medium text-gray-700 mb-2">문의가 없습니다</h3>
+                  <p className="text-gray-500 mb-4">새로운 문의를 작성해보세요.</p>
                   <button
-                    onClick={() => setActiveTab('new-question')}
-                    className="mt-4 text-rose-600 hover:text-rose-700 underline"
+                    onClick={() => setShowNewTicket(true)}
+                    className="bg-rose-500 text-white px-4 py-2 rounded-lg hover:bg-rose-600 transition-colors"
                   >
-                    첫 문의를 작성해보세요
+                    첫 문의 작성하기
                   </button>
                 </div>
               ) : (
-                myQuestions.map((question) => (
-                  <div key={question._id} className="bg-white rounded-xl shadow-sm p-6">
-                    <div className="flex items-start justify-between mb-3">
+                filteredTickets.map((ticket) => (
+                  <div key={ticket._id} className="bg-white rounded-lg shadow-sm p-4 hover:shadow-md transition-shadow cursor-pointer" onClick={() => {
+                    setSelectedTicket(ticket);
+                    setShowTicketDetail(true);
+                  }}>
+                    <div className="flex items-start justify-between mb-2">
                       <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          {getStatusIcon(question.status)}
-                          <span className="text-sm text-rose-600">
-                            {getStatusText(question.status)}
-                          </span>
-                          <span className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(question.priority)}`}>
-                            {priorities.find(p => p.value === question.priority)?.label}
-                          </span>
-                          <span className="text-xs text-rose-400">
-                            {categories.find(c => c.value === question.category)?.label}
-                          </span>
-                        </div>
-                        <h3 className="font-semibold text-rose-900 mb-2">{question.subject}</h3>
-                        <p className="text-rose-600 text-sm line-clamp-2">{question.content}</p>
+                        <h3 className="font-medium text-gray-900 mb-1">{ticket.subject}</h3>
+                        <p className="text-sm text-gray-600 line-clamp-2">{ticket.content || ticket.message}</p>
                       </div>
-                      <div className="flex items-center gap-2 ml-4">
-                        <button
-                          onClick={() => handleViewQuestion(question._id)}
-                          className="p-2 text-rose-500 hover:bg-rose-100 rounded-lg transition-colors"
-                        >
-                          <Eye size={16} />
-                        </button>
-                        <ChevronRight size={16} className="text-rose-300" />
+                      <div className="ml-3 flex items-center">
+                        {getStatusIcon(ticket.status)}
                       </div>
                     </div>
-                    <div className="flex items-center justify-between text-xs text-rose-400">
-                      <span>
-                        {new Date(question.createdAt).toLocaleDateString('ko-KR', {
-                          year: 'numeric',
-                          month: '2-digit',
-                          day: '2-digit',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </span>
-                      {question.adminResponse?.respondedAt && (
-                        <span>
-                          답변: {new Date(question.adminResponse.respondedAt).toLocaleDateString('ko-KR')}
+                    
+                    <div className="flex items-center justify-between text-xs text-gray-500">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
+                          {ticket.category}
                         </span>
-                      )}
+                        <span className="px-2 py-1 bg-orange-100 text-orange-600 rounded-full">
+                          {ticket.priority}
+                        </span>
+                      </div>
+                      <span>{new Date(ticket.createdAt).toLocaleDateString()}</span>
                     </div>
                   </div>
                 ))
               )}
             </div>
-          </div>
+          </>
         )}
+      </div>
 
-        {/* FAQ 탭 */}
-        {activeTab === 'faq' && (
-          <div className="space-y-6">
-            {/* 카테고리 필터 */}
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <select
-                value={faqCategory}
-                onChange={(e) => setFaqCategory(e.target.value)}
-                className="px-4 py-2 border border-rose-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
-              >
-                <option value="all">전체 카테고리</option>
-                {categories.map((category) => (
-                  <option key={category.value} value={category.value}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* FAQ 목록 */}
-            <div className="space-y-4">
-              {isLoading ? (
-                <div className="text-center py-8">
-                  <LoadingSpinner />
-                </div>
-              ) : faqs.length === 0 ? (
-                <div className="bg-white rounded-xl shadow-sm p-8 text-center">
-                  <MessageSquare size={48} className="mx-auto text-rose-300 mb-4" />
-                  <p className="text-rose-600">FAQ가 없습니다.</p>
-                </div>
-              ) : (
-                faqs.map((faq) => (
-                  <div key={faq._id} className="bg-white rounded-xl shadow-sm p-6">
-                    <div className="flex items-start gap-3 mb-3">
-                      <span className="text-xs px-2 py-1 bg-rose-100 text-rose-600 rounded-full">
-                        {categories.find(c => c.value === faq.category)?.label}
-                      </span>
-                      <span className="text-xs text-rose-400 flex items-center gap-1">
-                        <Eye size={12} />
-                        {faq.viewCount}
-                      </span>
-                    </div>
-                    <h3 className="font-semibold text-rose-900 mb-3">{faq.subject}</h3>
-                    <div className="bg-rose-50 rounded-lg p-4">
-                      <p className="text-rose-700 text-sm whitespace-pre-line">
-                        {faq.adminResponse?.content}
-                      </p>
-                      {faq.adminResponse?.respondedBy && (
-                        <div className="mt-3 pt-3 border-t border-rose-200">
-                          <span className="text-xs text-rose-500">
-                            답변: {faq.adminResponse.respondedBy} · {new Date(faq.adminResponse.respondedAt).toLocaleDateString('ko-KR')}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* 새 문의 탭 */}
-        {activeTab === 'new-question' && (
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="text-xl font-bold text-rose-900 mb-6">새 문의 작성</h2>
-            
-            <form onSubmit={handleSubmitQuestion} className="space-y-6">
-              {/* 카테고리 및 우선순위 */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-rose-700 mb-2">
-                    카테고리
-                  </label>
-                  <select
-                    value={newQuestion.category}
-                    onChange={(e) => setNewQuestion(prev => ({ ...prev, category: e.target.value }))}
-                    className="w-full px-4 py-3 border border-rose-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
-                  >
-                    {categories.map((category) => (
-                      <option key={category.value} value={category.value}>
-                        {category.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-rose-700 mb-2">
-                    우선순위
-                  </label>
-                  <select
-                    value={newQuestion.priority}
-                    onChange={(e) => setNewQuestion(prev => ({ ...prev, priority: e.target.value }))}
-                    className="w-full px-4 py-3 border border-rose-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
-                  >
-                    {priorities.map((priority) => (
-                      <option key={priority.value} value={priority.value}>
-                        {priority.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+      {/* 새 문의 작성 모달 */}
+      {showNewTicket && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="p-4 border-b">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold">새 문의 작성</h2>
+                <button
+                  onClick={() => setShowNewTicket(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  ✕
+                </button>
               </div>
-
-              {/* 제목 */}
+            </div>
+            
+            <form onSubmit={handleCreateTicket} className="p-4 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-rose-700 mb-2">
-                  제목
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">제목</label>
                 <input
                   type="text"
-                  value={newQuestion.subject}
-                  onChange={(e) => setNewQuestion(prev => ({ ...prev, subject: e.target.value }))}
-                  className="w-full px-4 py-3 border border-rose-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
-                  placeholder="문의 제목을 입력해주세요"
-                  maxLength={200}
+                  value={newTicket.subject}
+                  onChange={(e) => setNewTicket(prev => ({ ...prev, subject: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                  placeholder="문의 제목을 입력하세요"
                   required
                 />
-                <div className="text-xs text-rose-400 mt-1">
-                  {newQuestion.subject.length}/200
-                </div>
               </div>
-
-              {/* 내용 */}
+              
               <div>
-                <label className="block text-sm font-medium text-rose-700 mb-2">
-                  내용
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">카테고리</label>
+                <select
+                  value={newTicket.category}
+                  onChange={(e) => setNewTicket(prev => ({ ...prev, category: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                >
+                  <option value="general">일반 문의</option>
+                  <option value="donation">기부 문의</option>
+                  <option value="payment">결제 문의</option>
+                  <option value="account">계정 문의</option>
+                  <option value="technical">기술 문의</option>
+                  <option value="other">기타</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">우선순위</label>
+                <select
+                  value={newTicket.priority}
+                  onChange={(e) => setNewTicket(prev => ({ ...prev, priority: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                >
+                  <option value="low">낮음</option>
+                  <option value="medium">보통</option>
+                  <option value="high">높음</option>
+                  <option value="urgent">긴급</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">내용</label>
                 <textarea
-                  value={newQuestion.content}
-                  onChange={(e) => setNewQuestion(prev => ({ ...prev, content: e.target.value }))}
-                  className="w-full px-4 py-3 border border-rose-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
-                  placeholder="문의 내용을 상세히 작성해주세요"
-                  rows={8}
-                  maxLength={2000}
+                  value={newTicket.message}
+                  onChange={(e) => setNewTicket(prev => ({ ...prev, message: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent h-32 resize-none"
+                  placeholder="문의 내용을 자세히 입력하세요"
                   required
                 />
-                <div className="text-xs text-rose-400 mt-1">
-                  {newQuestion.content.length}/2000
-                </div>
               </div>
-
-              {/* 제출 버튼 */}
-              <div className="flex justify-end">
+              
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowNewTicket(false)}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  취소
+                </button>
                 <button
                   type="submit"
-                  disabled={isLoading}
-                  className="bg-rose-600 text-white px-6 py-3 rounded-lg hover:bg-rose-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                  className="flex-1 px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition-colors"
                 >
-                  {isLoading ? (
-                    <>
-                      <LoadingSpinner size="sm" />
-                      등록 중...
-                    </>
-                  ) : (
-                    <>
-                      <Send size={16} />
-                      문의 등록
-                    </>
-                  )}
+                  문의 등록
                 </button>
               </div>
             </form>
           </div>
-        )}
-      </main>
-
-      {/* 하단 네비게이션 */}
-      <div className="bg-white border-t border-rose-200 px-6 py-4 sticky bottom-0">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <button
-            onClick={() => navigate('/mypage')}
-            className="flex items-center gap-2 px-4 py-2 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-          >
-            <ArrowLeft size={16} />
-            <span>마이페이지</span>
-          </button>
-          
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => navigate('/settings')}
-              className="px-4 py-2 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors text-sm"
-            >
-              설정
-            </button>
-          </div>
         </div>
-      </div>
+      )}
 
-      {/* 질문 상세 모달 */}
-      {showQuestionDetail && selectedQuestion && (
+      {/* 티켓 상세보기 모달 */}
+      {showTicketDetail && selectedTicket && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b border-rose-100 p-6 flex items-center justify-between">
-              <div className="flex items-center gap-3">
+          <div className="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-4 border-b">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold">{selectedTicket.subject}</h2>
                 <button
-                  onClick={() => setShowQuestionDetail(false)}
-                  className="p-2 hover:bg-rose-100 rounded-full transition-colors"
-                  title="뒤로가기"
+                  onClick={() => setShowTicketDetail(false)}
+                  className="text-gray-400 hover:text-gray-600"
                 >
-                  <ArrowLeft size={20} className="text-rose-600" />
+                  ✕
                 </button>
-                <h3 className="text-lg font-bold text-rose-900">문의 상세</h3>
               </div>
-              <button
-                onClick={() => setShowQuestionDetail(false)}
-                className="text-rose-500 hover:text-rose-700 p-2 hover:bg-rose-100 rounded-full transition-colors"
-                title="닫기"
-              >
-                ✕
-              </button>
             </div>
-
-            <div className="p-6 space-y-6">
-              {/* 질문 정보 */}
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  {getStatusIcon(selectedQuestion.status)}
-                  <span className="text-sm text-rose-600">
-                    {getStatusText(selectedQuestion.status)}
-                  </span>
-                  <span className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(selectedQuestion.priority)}`}>
-                    {priorities.find(p => p.value === selectedQuestion.priority)?.label}
-                  </span>
-                  <span className="text-xs text-rose-400">
-                    {categories.find(c => c.value === selectedQuestion.category)?.label}
-                  </span>
-                </div>
-
-                <h4 className="text-lg font-semibold text-rose-900 mb-3">
-                  {selectedQuestion.subject}
-                </h4>
-
-                <div className="bg-rose-50 rounded-lg p-4 mb-4">
-                  <p className="text-rose-700 whitespace-pre-line">
-                    {selectedQuestion.content}
-                  </p>
-                </div>
-
-                <div className="text-xs text-rose-400">
-                  작성일: {new Date(selectedQuestion.createdAt).toLocaleDateString('ko-KR', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
-                </div>
+            
+            <div className="p-4 space-y-4">
+              {/* 티켓 정보 */}
+              <div className="flex items-center gap-4 text-sm">
+                {getStatusIcon(selectedTicket.status)}
+                <span className="font-medium">{getStatusText(selectedTicket.status)}</span>
+                <span className={`px-2 py-1 rounded-full text-xs ${getPriorityColor(selectedTicket.priority)}`}>
+                  {selectedTicket.priority === 'high' ? '높음' : selectedTicket.priority === 'medium' ? '보통' : '낮음'}
+                </span>
+                <span className="text-gray-500">{getCategoryText(selectedTicket.category)}</span>
+                <span className="text-gray-500">{new Date(selectedTicket.createdAt).toLocaleString()}</span>
               </div>
-
-              {/* 답변 */}
-              {selectedQuestion.adminResponse?.content && (
-                <div>
-                  <h5 className="font-semibold text-rose-900 mb-3">답변</h5>
-                  <div className="bg-green-50 rounded-lg p-4">
-                    <p className="text-green-700 whitespace-pre-line mb-3">
-                      {selectedQuestion.adminResponse.content}
-                    </p>
-                    <div className="text-xs text-green-600 pt-3 border-t border-green-200">
-                      답변자: {selectedQuestion.adminResponse.respondedBy} · {new Date(selectedQuestion.adminResponse.respondedAt).toLocaleDateString('ko-KR')}
+              
+              {/* 티켓 내용 */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-gray-800 whitespace-pre-wrap">{selectedTicket.message}</p>
+              </div>
+              
+              {/* 답변 목록 */}
+              {selectedTicket.replies && selectedTicket.replies.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="font-medium text-gray-800">답변</h3>
+                  {selectedTicket.replies.map((reply, index) => (
+                    <div key={index} className="bg-rose-50 rounded-lg p-3 border border-rose-200">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-sm font-medium text-rose-800">관리자</span>
+                        <span className="text-xs text-rose-600">
+                          {new Date(reply.createdAt).toLocaleString()}
+                        </span>
+                      </div>
+                      <p className="text-sm text-rose-700 whitespace-pre-wrap">{reply.message}</p>
                     </div>
-                  </div>
+                  ))}
                 </div>
               )}
+              
+              {/* 답변 작성 */}
+              <div className="border-t pt-4">
+                <h3 className="font-medium text-gray-800 mb-2">답변 작성</h3>
+                <textarea
+                  value={replyMessage}
+                  onChange={(e) => setReplyMessage(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent h-24 resize-none"
+                  placeholder="답변 내용을 입력하세요"
+                />
+                <div className="flex gap-3 mt-3">
+                  <button
+                    onClick={() => handleReplyToTicket(selectedTicket._id)}
+                    className="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition-colors flex items-center gap-2"
+                  >
+                    <Send className="w-4 h-4" />
+                    답변 등록
+                  </button>
+                  <button
+                    onClick={() => handleDeleteTicket(selectedTicket._id)}
+                    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    문의 삭제
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

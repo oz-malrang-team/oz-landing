@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Support = require('../models/Support');
-const { authenticateToken } = require('../middleware/auth');
+const authenticateToken = require('../middleware/auth');
 
 const successResponse = (message, data = null) => ({
   success: true,
@@ -15,6 +15,7 @@ const errorResponse = (message, error = null) => ({
   error
 });
 
+// FAQ 목록 조회
 router.get('/faq', async (req, res) => {
   try {
     const testFaqs = [
@@ -80,4 +81,160 @@ router.get('/faq', async (req, res) => {
   }
 });
 
-module.exports = router;
+// 사용자 질문 목록 조회 (인증 필요)
+router.get('/my-questions', authenticateToken, async (req, res) => {
+  try {
+    const { status } = req.query;
+    
+    // 테스트 데이터
+    const testQuestions = [
+      {
+        _id: '507f1f77bcf86cd799439020',
+        subject: '기부금 영수증 발급 문의',
+        content: '지난달에 기부한 금액에 대한 영수증을 발급받고 싶습니다.',
+        category: 'donation',
+        status: 'answered',
+        adminResponse: {
+          content: '기부금 영수증은 마이페이지의 기부 내역에서 직접 발급받으실 수 있습니다. 연말정산 시 필요한 기부금 영수증은 국세청 연말정산 간소화 서비스에 자동 등록됩니다.',
+          respondedBy: '고객지원팀',
+          respondedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+        },
+        createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+        updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+      },
+      {
+        _id: '507f1f77bcf86cd799439021',
+        subject: '정기후원 중단 요청',
+        content: '정기후원을 일시적으로 중단하고 싶습니다.',
+        category: 'donation',
+        status: 'pending',
+        adminResponse: null,
+        createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+        updatedAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000)
+      }
+    ];
+
+    // 상태별 필터링
+    let filteredQuestions = testQuestions;
+    if (status && status !== 'all') {
+      filteredQuestions = testQuestions.filter(q => q.status === status);
+    }
+
+    return res.json(successResponse('내 질문 목록 조회 성공', { 
+      questions: filteredQuestions 
+    }));
+
+  } catch (error) {
+    console.error('내 질문 조회 오류:', error);
+    res.status(500).json(errorResponse('질문 목록을 불러오는데 실패했습니다.'));
+  }
+});
+
+// 질문 작성 (인증 필요)
+router.post('/questions', authenticateToken, async (req, res) => {
+  try {
+    const { subject, content, category } = req.body;
+    
+    if (!subject || !content || !category) {
+      return res.status(400).json(errorResponse('제목, 내용, 카테고리를 모두 입력해주세요.'));
+    }
+
+    // 테스트용 새 질문 생성
+    const newQuestion = {
+      _id: '507f1f77bcf86cd799439022',
+      subject: subject.trim(),
+      content: content.trim(),
+      category,
+      status: 'pending',
+      adminResponse: null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+
+    return res.status(201).json(successResponse('질문이 등록되었습니다.', { 
+      question: newQuestion 
+    }));
+
+  } catch (error) {
+    console.error('질문 작성 오류:', error);
+    res.status(500).json(errorResponse('질문 등록에 실패했습니다.'));
+  }
+});
+
+// 질문 상세 조회 (인증 필요)
+router.get('/questions/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    // 테스트 데이터
+    const testQuestion = {
+      _id: id,
+      subject: '기부금 영수증 발급 문의',
+      content: '지난달에 기부한 금액에 대한 영수증을 발급받고 싶습니다.',
+      category: 'donation',
+      status: 'answered',
+      adminResponse: {
+        content: '기부금 영수증은 마이페이지의 기부 내역에서 직접 발급받으실 수 있습니다. 연말정산 시 필요한 기부금 영수증은 국세청 연말정산 간소화 서비스에 자동 등록됩니다.',
+        respondedBy: '고객지원팀',
+        respondedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+      },
+      createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+      updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)
+    };
+
+    return res.json(successResponse('질문 상세 조회 성공', { 
+      question: testQuestion 
+    }));
+
+  } catch (error) {
+    console.error('질문 상세 조회 오류:', error);
+    res.status(500).json(errorResponse('질문을 불러오는데 실패했습니다.'));
+  }
+});
+
+// 질문 수정 (인증 필요)
+router.put('/questions/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { subject, content, category } = req.body;
+    
+    if (!subject || !content || !category) {
+      return res.status(400).json(errorResponse('제목, 내용, 카테고리를 모두 입력해주세요.'));
+    }
+
+    // 테스트용 수정된 질문
+    const updatedQuestion = {
+      _id: id,
+      subject: subject.trim(),
+      content: content.trim(),
+      category,
+      status: 'pending',
+      adminResponse: null,
+      createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+      updatedAt: new Date()
+    };
+
+    return res.json(successResponse('질문이 수정되었습니다.', { 
+      question: updatedQuestion 
+    }));
+
+  } catch (error) {
+    console.error('질문 수정 오류:', error);
+    res.status(500).json(errorResponse('질문 수정에 실패했습니다.'));
+  }
+});
+
+// 질문 삭제 (인증 필요)
+router.delete('/questions/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    return res.json(successResponse('질문이 삭제되었습니다.'));
+
+  } catch (error) {
+    console.error('질문 삭제 오류:', error);
+    res.status(500).json(errorResponse('질문 삭제에 실패했습니다.'));
+  }
+});
+
+module.exports = router; 
